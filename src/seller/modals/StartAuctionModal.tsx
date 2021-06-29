@@ -1,0 +1,75 @@
+import * as React from "react";
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+
+import { SellerEscrow, SellerEscrowOfferInfo, SellerEscrowBidInfo } from "../../../lib";
+
+import { EthereumContext } from "../../helpers";
+import { TokenAmount } from "../../components/TokenAmount";
+
+/******************************************************************************/
+/* Start Auction Modal Component */
+/******************************************************************************/
+
+type StartAuctionModalProps = {
+  open: boolean;
+  onClose: () => void;
+  context: EthereumContext;
+  sellerEscrow: SellerEscrow;
+  offerInfo: SellerEscrowOfferInfo;
+  bidInfo: SellerEscrowBidInfo;
+};
+
+type StartAuctionModalState = {
+  started: boolean,
+  error?: string;
+};
+
+export class StartAuctionModal extends React.Component<StartAuctionModalProps, StartAuctionModalState> {
+  state: StartAuctionModalState = {
+    started: false,
+  };
+
+  async handleClick() {
+    try {
+      await this.props.sellerEscrow.startAuction();
+    } catch (err) {
+      this.setState({...this.state, error: err.toString()});
+      return;
+    }
+
+    this.setState({...this.state, started: true});
+    this.props.onClose();
+  }
+
+  render() {
+    return (
+      <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="simple-modal-title" fullWidth={true}>
+        <div>
+          <DialogTitle id="simple-modal-title">Start Auction</DialogTitle>
+          <DialogContent>
+            <List>
+              <ListItem>Starting Price: <TokenAmount context={this.props.context} address={this.props.offerInfo.paymentTokenAddress} amount={this.props.offerInfo.startingPrice} /></ListItem>
+              <ListItem>Guaranteed Price: <TokenAmount context={this.props.context} address={this.props.bidInfo.paymentTokenAddress} amount={this.props.bidInfo.price} /></ListItem>
+            </List>
+            {this.state.error && <b>{this.state.error}</b>}
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={this.props.onClose}>
+              Close
+            </Button>
+            <Button color="primary" variant="contained" onClick={() => { this.handleClick(); }} disabled={this.state.started} autoFocus>
+              Start Auction
+            </Button>
+          </DialogActions>
+        </div>
+      </Dialog>
+    );
+  }
+}
