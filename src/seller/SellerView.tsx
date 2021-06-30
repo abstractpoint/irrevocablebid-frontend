@@ -13,7 +13,7 @@ import { validateSellerEscrow, validateGuarantorEscrow } from "../../lib";
 import { SellerEscrow, SellerEscrowState, SellerEscrowContractInfo,
          SellerEscrowOfferInfo, SellerEscrowBidInfo, SellerEscrowSettlementInfo } from "../../lib";
 
-import { EthereumContext, decodeSellOrder, decodeBuyOrder } from "../helpers";
+import { EthereumContext, isWalletConnected, decodeSellOrder, decodeBuyOrder } from "../helpers";
 
 import { ContractInfo } from "./components/ContractInfo";
 import { OfferInfo } from "./components/OfferInfo";
@@ -178,7 +178,7 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
     if (!this.state.sellerEscrow)
       return;
 
-    const isOwner = await this.state.sellerEscrow.isOwner();
+    const isOwner = (await isWalletConnected(this.props.context.provider)) && (await this.state.sellerEscrow.isOwner());
     const state = await this.state.sellerEscrow.getState();
     const contractInfo = await this.state.sellerEscrow.getContractInfo();
     const offerInfo = await this.state.sellerEscrow.getOfferInfo();
