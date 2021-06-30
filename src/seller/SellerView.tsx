@@ -91,6 +91,7 @@ type SellerViewProps = RouteComponentProps<{}> & {
 type SellerViewState = {
   sellerEscrow: SellerEscrow | null;
   sellerEscrowInfo: {
+    isOwner: boolean;
     state: SellerEscrowState | null;
     contractInfo: SellerEscrowContractInfo | null;
     offerInfo: SellerEscrowOfferInfo | null;
@@ -105,6 +106,7 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
   state: SellerViewState = {
     sellerEscrow: null,
     sellerEscrowInfo: {
+      isOwner: false,
       state: null,
       contractInfo: null,
       offerInfo: null,
@@ -172,6 +174,7 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
     if (!this.state.sellerEscrow)
       return;
 
+    const isOwner = await this.state.sellerEscrow.isOwner();
     const state = await this.state.sellerEscrow.getState();
     const contractInfo = await this.state.sellerEscrow.getContractInfo();
     const offerInfo = await this.state.sellerEscrow.getOfferInfo();
@@ -179,7 +182,7 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
     const projectedSettlementInfo = await this.state.sellerEscrow.getProjectedSettlementInfo();
     const settlementInfo = await this.state.sellerEscrow.getSettlementInfo();
 
-    this.setState({...this.state, sellerEscrowInfo: {state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo}});
+    this.setState({...this.state, sellerEscrowInfo: {isOwner, state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo}});
   }
 
   handleModalClose() {
@@ -206,7 +209,9 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
                 <Grid container item alignItems="center" justify="center" xs={12} spacing={1}>
                   <Grid item xs={6}>
                     <Button fullWidth size="medium" variant="contained" color="primary"
-                     disabled={!(this.state.sellerEscrowInfo.state !== null && button.isVisible(this.state.sellerEscrowInfo.state))}
+                     disabled={this.state.sellerEscrowInfo.state === null ||
+                               !this.state.sellerEscrowInfo.isOwner ||
+                               !button.isVisible(this.state.sellerEscrowInfo.state)}
                      onClick={() => {this.handleClick(button.modal); }}>
                       {button.name}
                     </Button>
