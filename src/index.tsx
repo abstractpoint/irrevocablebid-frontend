@@ -2,8 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { HashRouter, Switch, Route } from "react-router-dom";
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
 
 import * as ethers from "ethers";
 
@@ -55,7 +53,7 @@ class App extends React.Component<{}, AppState> {
     }
 
     return (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <div>
         <WalletBar context={this.state.context} />
         <HashRouter>
           <Switch>
@@ -73,7 +71,7 @@ class App extends React.Component<{}, AppState> {
             )}/>
           </Switch>
         </HashRouter>
-      </MuiPickersUtilsProvider>
+      </div>
     );
   }
 }

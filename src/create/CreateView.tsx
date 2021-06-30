@@ -13,7 +13,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Slider from '@material-ui/core/Slider';
-import { DateTimePicker } from "@material-ui/pickers";
 
 import * as ethers from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -52,7 +51,7 @@ type CreateViewState = {
     initialPrice: string | null;
     paymentTokenAddress: string | null;
     guarantorSellerSplitPercentage: number;
-    expirationTime: Date | null;
+    expirationDays: string | null;
   };
   sellOrderParameters: SellOrderParameters | null;
 
@@ -72,7 +71,7 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
       initialPrice: null,
       paymentTokenAddress: "",
       guarantorSellerSplitPercentage: 25,
-      expirationTime: null,
+      expirationDays: "3",
     },
     sellOrderParameters: null,
 
@@ -132,10 +131,11 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
 
     const guarantorSellerSplitBasisPoints = this.state.rawInputs.guarantorSellerSplitPercentage * 100;
 
-    if (this.state.rawInputs.expirationTime === null)
+    const expirationDays: number = parseInt(this.state.rawInputs.expirationDays || "");
+    if (isNaN(expirationDays) || expirationDays < 1)
       throw new Error("Invalid expiration date.");
 
-    const expirationTime: number = this.state.rawInputs.expirationTime.getTime() / 1000;
+    const expirationTime: number = Math.floor(Date.now() / 1000) + 86400 * expirationDays;
 
     let decimals: number;
     try {
@@ -263,8 +263,8 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
     this.setState({...this.state, rawInputs: {...this.state.rawInputs, guarantorSellerSplitPercentage: value}});
   }
 
-  handleExpirationDateChange(value: Date | null) {
-    this.setState({...this.state, rawInputs: {...this.state.rawInputs, expirationTime: value}});
+  handleExpirationDaysChange(value: string) {
+    this.setState({...this.state, rawInputs: {...this.state.rawInputs, expirationDays: value}});
   }
 
   render() {
@@ -312,9 +312,9 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
                       onChange={(event: object, value: number | number[]) => { this.handleGuarantorSellerSplitPercentageChange(value); }} />
             </Grid>
             <Grid item xs={12}>
-              <DateTimePicker fullWidth label="Expiration Date" inputVariant="outlined"
-                              value={this.state.rawInputs.expirationTime}
-                              onChange={(value: Date | null) => { this.handleExpirationDateChange(value); }} />
+              <TextField name="expirationDays" variant="outlined" fullWidth label="Auction Days" type="number"
+                         defaultValue="3" InputLabelProps={{ shrink: true }} InputProps={{ inputProps: { min: 1 } }}
+                         onChange={(event: any) => { this.handleExpirationDaysChange(event.target.value); }} />
             </Grid>
             <Grid item xs={12}>
               {this.state.error && <b>{this.state.error}</b>}
