@@ -52,6 +52,14 @@ export function decodeBuyOrder(deployment: Deployment, sellOrder: SellOrder | nu
   return buyOrder;
 }
 
+export async function isWalletConnected(provider?: ethers.providers.JsonRpcProvider): Promise<boolean> {
+  if (!provider)
+    return false;
+
+  const accounts = await provider.listAccounts();
+  return accounts.length > 0;
+}
+
 export async function lookupTokenInfo(provider: ethers.providers.JsonRpcProvider, tokenAddress: string): Promise<{symbol: string, decimals: number}> {
   const abi = [
     "function decimals() view returns (uint8)",
