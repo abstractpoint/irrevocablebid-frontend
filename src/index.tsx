@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import * as ethers from "ethers";
 
+import { WalletBar } from "./components/WalletBar";
 import { CreateView } from "./create/CreateView";
 import { GuaranteeView } from "./guarantee/GuaranteeView";
 import { SellerView } from "./seller/SellerView";
@@ -41,10 +42,7 @@ class App extends React.Component<{}, AppState> {
     const network = await provider.getNetwork();
     const deployment = Deployments[network.chainId];
 
-    /* FIXME should be a connect wallet button */
-    await (window as any).ethereum.request({ method: 'eth_requestAccounts' });
-
-    this.setState({context: {provider, deployment}});
+    this.setState({...this.state, context: {provider, deployment}});
   }
 
   render() {
@@ -58,6 +56,7 @@ class App extends React.Component<{}, AppState> {
 
     return (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <WalletBar context={this.state.context} />
         <HashRouter>
           <Switch>
             <Route exact path="/" render={(props) => (
