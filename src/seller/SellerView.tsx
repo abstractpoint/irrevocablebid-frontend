@@ -122,6 +122,10 @@ class SellerViewComponent extends React.Component<SellerViewProps, SellerViewSta
     const sellOrderData = params.get('sell');
     const buyOrderData = params.get('buy');
     this.instantiate(sellOrderData, buyOrderData);
+
+    (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
+      this.refreshState();
+    });
   }
 
   async instantiate(sellOrderData: string | null, buyOrderData: string | null) {
