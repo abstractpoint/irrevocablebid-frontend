@@ -13,6 +13,7 @@ import * as ethers from "ethers";
 
 import { BuyOrder } from "../../../lib";
 import { SellerEscrow, SellerEscrowBidInfo } from "../../../lib";
+import { validateGuarantorEscrow } from "../../../lib";
 import { serializeSellOrder, serializeBuyOrder } from "../../../lib";
 
 import { EthereumContext, decodeBuyOrder } from "../../helpers";
@@ -72,6 +73,15 @@ export class ApproveGuarantorModal extends React.Component<ApproveGuarantorModal
     } catch (err) {
       this.setState({...this.state, error: (err instanceof Object) ? `Error: ${err.message}` : err});
       return;
+    }
+
+    if (buyOrder) {
+      try {
+        await validateGuarantorEscrow(this.props.context.provider, this.props.context.deployment, buyOrder);
+      } catch(err) {
+        this.setState({...this.state, error: (err instanceof Object) ? `Error: ${err.message}` : err});
+        return;
+      }
     }
 
     const sellerEscrow = new SellerEscrow(this.props.context.provider, this.props.context.deployment, this.props.sellerEscrow.sellOrder, buyOrder);
