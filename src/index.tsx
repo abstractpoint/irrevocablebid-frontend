@@ -50,7 +50,9 @@ class App extends React.Component<{}, AppState> {
   render() {
     if (this.state.context.provider === undefined) {
       return (
-        <div/>
+        <p>
+          This DAPP requires a browser wallet.
+        </p>
       );
     }
 
