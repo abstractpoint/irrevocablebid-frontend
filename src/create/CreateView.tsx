@@ -22,7 +22,7 @@ import { AssetKind, ERC721Asset, ERC1155Asset } from "../../lib";
 import { SellOrder, BuyOrder, serializeSellOrder } from "../../lib";
 import { SellerEscrow, createAuctionSellOrder } from "../../lib";
 
-import { EthereumContext, lookupTokenInfo } from "../helpers";
+import { EthereumContext, isWalletConnected, lookupTokenInfo } from "../helpers";
 
 import { EthereumTransaction, EthereumTransactionStatus } from "../components/EthereumTransaction";
 
@@ -43,6 +43,7 @@ type CreateViewProps = RouteComponentProps<{}> & {
 };
 
 type CreateViewState = {
+  walletConnected: boolean;
   rawInputs: {
     tokenAddress: string | null,
     tokenId: string | null;
@@ -62,6 +63,7 @@ type CreateViewState = {
 
 export class CreateViewComponent extends React.Component<CreateViewProps, CreateViewState> {
   state: CreateViewState = {
+    walletConnected: false,
     rawInputs: {
       tokenAddress: null,
       tokenId: null,
@@ -76,6 +78,19 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
 
     transactionStatus: EthereumTransactionStatus.None,
   };
+
+  componentDidMount() {
+    (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
+      this.setState({...this.state, walletConnected: accounts.length > 0});
+    });
+
+    this.checkWalletConnected();
+  }
+
+  async checkWalletConnected() {
+    const walletConnected = await isWalletConnected(this.props.context.provider);
+    this.setState({...this.state, walletConnected});
+  }
 
   async parseParameters(): Promise<SellOrderParameters> {
     if (!this.props.context.provider)
@@ -302,14 +317,15 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
                               onChange={(value: Date | null) => { this.handleExpirationDateChange(value); }} />
             </Grid>
             <Grid item xs={12}>
-              {this.state.error && <b>Error: {this.state.error}</b>}
+              {this.state.error && <b>{this.state.error}</b>}
               {this.state.transaction && <EthereumTransaction context={this.props.context} transaction={this.state.transaction}
                                                               onComplete={(success: boolean) => { this.handleComplete(success); }} />}
             </Grid>
             <Grid item xs={12}>
               <Button fullWidth size="medium" variant="contained" color="primary"
                       onClick={() => { this.handleClick(); }}
-                      disabled={this.state.transactionStatus == EthereumTransactionStatus.Pending ||
+                      disabled={!this.state.walletConnected ||
+                                this.state.transactionStatus == EthereumTransactionStatus.Pending ||
                                 this.state.transactionStatus == EthereumTransactionStatus.Success} autoFocus>
                 Create
               </Button>
