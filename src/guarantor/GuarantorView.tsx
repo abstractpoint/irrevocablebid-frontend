@@ -77,6 +77,7 @@ type GuarantorViewProps = RouteComponentProps<{}> & {
 type GuarantorViewState = {
   guarantorEscrow: GuarantorEscrow | null;
   guarantorEscrowInfo: {
+    isOwner: boolean;
     state: GuarantorEscrowState | null;
     contractInfo: GuarantorEscrowContractInfo | null;
     offerInfo: GuarantorEscrowOfferInfo | null;
@@ -92,6 +93,7 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
   state: GuarantorViewState = {
     guarantorEscrow: null,
     guarantorEscrowInfo: {
+      isOwner: false,
       state: null,
       contractInfo: null,
       offerInfo: null,
@@ -160,6 +162,7 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
     if (!this.state.guarantorEscrow)
       return;
 
+    const isOwner = await this.state.guarantorEscrow.isOwner();
     const state = await this.state.guarantorEscrow.getState();
     const contractInfo = await this.state.guarantorEscrow.getContractInfo();
     const offerInfo = await this.state.guarantorEscrow.getOfferInfo();
@@ -168,7 +171,7 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
     const settlementInfo = await this.state.guarantorEscrow.getSettlementInfo();
     const hasAsset = await this.state.guarantorEscrow.hasAsset();
 
-    this.setState({...this.state, guarantorEscrowInfo: {state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo, hasAsset}});
+    this.setState({...this.state, guarantorEscrowInfo: {isOwner, state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo, hasAsset}});
   }
 
   handleModalClose() {
@@ -195,7 +198,9 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
                 <Grid container item alignItems="center" justify="center" xs={12} spacing={1}>
                   <Grid item xs={6}>
                     <Button fullWidth size="medium" variant="contained" color="primary"
-                     disabled={!(this.state.guarantorEscrowInfo.state !== null && button.isVisible(this.state.guarantorEscrowInfo.state))}
+                     disabled={this.state.guarantorEscrowInfo.state === null ||
+                               !this.state.guarantorEscrowInfo.isOwner ||
+                               !button.isVisible(this.state.guarantorEscrowInfo.state)}
                      onClick={() => {this.handleClick(button.modal); }}>
                       {button.name}
                     </Button>
@@ -211,7 +216,9 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
               <Grid container item alignItems="center" justify="center" xs={12} spacing={1}>
                 <Grid item xs={6}>
                   <Button fullWidth size="medium" variant="contained" color="primary"
-                   disabled={!this.state.guarantorEscrowInfo.hasAsset}
+                   disabled={this.state.guarantorEscrowInfo.state === null ||
+                             !this.state.guarantorEscrowInfo.isOwner ||
+                             !this.state.guarantorEscrowInfo.hasAsset}
                    onClick={() => {this.handleClick(GuarantorViewModal.WithdrawNFT); }}>
                     Withdraw NFT
                   </Button>
