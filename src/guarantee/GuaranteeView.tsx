@@ -17,7 +17,7 @@ import { createMatchingBuyOrder, serializeSellOrder, serializeBuyOrder } from ".
 import { SellerEscrow, SellerEscrowContractInfo, SellerEscrowOfferInfo } from "../../lib";
 import { GuarantorEscrow } from "../../lib";
 
-import { EthereumContext, lookupTokenInfo, decodeSellOrder } from "../helpers";
+import { EthereumContext, isWalletConnected, lookupTokenInfo, decodeSellOrder } from "../helpers";
 import { EthereumTransaction, EthereumTransactionStatus } from "../components/EthereumTransaction";
 
 import { OfferInfo } from "./components/OfferInfo";
@@ -31,6 +31,7 @@ type GuaranteeViewProps = RouteComponentProps<{}> & {
 };
 
 type GuaranteeViewState = {
+  walletConnected: boolean;
   sellOrder: SellOrder | null;
   sellerEscrowInfo: {
     contractInfo: SellerEscrowContractInfo | null;
@@ -46,6 +47,7 @@ type GuaranteeViewState = {
 
 export class GuaranteeViewComponent extends React.Component<GuaranteeViewProps, GuaranteeViewState> {
   state: GuaranteeViewState = {
+    walletConnected: false,
     sellOrder: null,
     sellerEscrowInfo: {
       contractInfo: null,
@@ -60,6 +62,17 @@ export class GuaranteeViewComponent extends React.Component<GuaranteeViewProps, 
     const params = new URLSearchParams(this.props.location.search);
     const sellOrderData = params.get('sell');
     this.instantiate(sellOrderData);
+
+    (window as any).ethereum.on('accountsChanged', (accounts: string[]) => {
+      this.setState({...this.state, walletConnected: accounts.length > 0});
+    });
+
+    this.checkWalletConnected();
+  }
+
+  async checkWalletConnected() {
+    const walletConnected = await isWalletConnected(this.props.context.provider);
+    this.setState({...this.state, walletConnected});
   }
 
   async instantiate(sellOrderData: string | null) {
@@ -191,7 +204,8 @@ export class GuaranteeViewComponent extends React.Component<GuaranteeViewProps, 
             <Grid item xs={12}>
               <Button fullWidth color="primary" variant="contained"
                       onClick={() => { this.handleClick(); }}
-                      disabled={this.state.transactionStatus == EthereumTransactionStatus.Pending ||
+                      disabled={!this.state.walletConnected ||
+                                this.state.transactionStatus == EthereumTransactionStatus.Pending ||
                                 this.state.transactionStatus == EthereumTransactionStatus.Success} autoFocus>
                 Create
               </Button>
