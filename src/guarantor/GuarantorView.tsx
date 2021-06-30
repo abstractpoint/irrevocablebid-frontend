@@ -24,6 +24,7 @@ import { DepositPaymentModal } from "./modals/DepositPaymentModal";
 import { CommitBidModal } from "./modals/CommitBidModal";
 import { ShowBidModal } from "./modals/ShowBidModal";
 import { SettleModal } from "./modals/SettleModal";
+import { WithdrawNFTModal } from "./modals/WithdrawNFTModal";
 
 /******************************************************************************/
 /* Top-level Guarantor View Component */
@@ -34,6 +35,7 @@ enum GuarantorViewModal {
   CommitBid,
   GetBid,
   Settle,
+  WithdrawNFT,
 }
 
 const GuarantorViewButtons: {
@@ -81,6 +83,7 @@ type GuarantorViewState = {
     bidInfo: GuarantorEscrowBidInfo | null;
     projectedSettlementInfo: GuarantorEscrowSettlementInfo | null;
     settlementInfo: GuarantorEscrowSettlementInfo | null;
+    hasAsset: boolean;
   };
   modalOpen: GuarantorViewModal | null;
 };
@@ -95,6 +98,7 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
       bidInfo: null,
       projectedSettlementInfo: null,
       settlementInfo: null,
+      hasAsset: false,
     },
     modalOpen: null
   };
@@ -162,8 +166,9 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
     const bidInfo = await this.state.guarantorEscrow.getBidInfo();
     const projectedSettlementInfo = await this.state.guarantorEscrow.getProjectedSettlementInfo();
     const settlementInfo = await this.state.guarantorEscrow.getSettlementInfo();
+    const hasAsset = await this.state.guarantorEscrow.hasAsset();
 
-    this.setState({...this.state, guarantorEscrowInfo: {state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo}});
+    this.setState({...this.state, guarantorEscrowInfo: {state, contractInfo, offerInfo, bidInfo, projectedSettlementInfo, settlementInfo, hasAsset}});
   }
 
   handleModalClose() {
@@ -202,6 +207,20 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
                 </Grid>
               );
             })}
+            {this.state.guarantorEscrowInfo.hasAsset &&
+              <Grid container item alignItems="center" justify="center" xs={12} spacing={1}>
+                <Grid item xs={6}>
+                  <Button fullWidth size="medium" variant="contained" color="primary"
+                   disabled={!this.state.guarantorEscrowInfo.hasAsset}
+                   onClick={() => {this.handleClick(GuarantorViewModal.WithdrawNFT); }}>
+                    Withdraw NFT
+                  </Button>
+                </Grid>
+                <Grid item xs={2}>
+                  {this.state.guarantorEscrowInfo.state !== null && !this.state.guarantorEscrowInfo.hasAsset &&
+                   <CheckCircleIcon color="primary" />}
+                </Grid>
+              </Grid>}
           </Grid>
         </Paper>
         {this.state.guarantorEscrow !== null && this.state.guarantorEscrowInfo.bidInfo !== null &&
@@ -227,6 +246,12 @@ export class GuarantorViewComponent extends React.Component<GuarantorViewProps, 
                        context={this.props.context}
                        guarantorEscrow={this.state.guarantorEscrow}
                        settlementInfo={this.state.guarantorEscrowInfo.projectedSettlementInfo} />}
+        {this.state.guarantorEscrow !== null && this.state.guarantorEscrowInfo.offerInfo !== null &&
+          <WithdrawNFTModal open={this.state.modalOpen == GuarantorViewModal.WithdrawNFT}
+                            onClose={() => { this.handleModalClose(); }}
+                            context={this.props.context}
+                            guarantorEscrow={this.state.guarantorEscrow}
+                            offerInfo={this.state.guarantorEscrowInfo.offerInfo} />}
       </Container>
     );
   }
