@@ -47,10 +47,6 @@ export class FulfillAuctionModal extends React.Component<FulfillAuctionModalProp
     transactionStatus: EthereumTransactionStatus.None,
   };
 
-  componentDidMount() {
-    this.refreshBuyOrders();
-  }
-
   handleSelect(index: number) {
     this.setState({...this.state, index});
   }
