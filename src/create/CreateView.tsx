@@ -4,10 +4,14 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { Panel, PanelWrapper } from '../components/Panel';
 import { Typography } from '../components/Typography';
-import { TextField, FieldLabel, RadioGroup } from '../components/FormFields';
+import {
+  TextField,
+  FieldLabel,
+  RadioGroup,
+} from '../components/FormFields/TextField';
+import { Slider } from '../components/FormFields/Slider';
+import { Button } from '../components/Button';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Slider from '@material-ui/core/Slider';
 
 import * as ethers from 'ethers';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -412,21 +416,20 @@ export class CreateViewComponent extends React.Component<
                 </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                <Typography id="guarantor-seller-split-label">
-                  Guarantor-Seller Split Percentage
-                </Typography>
-                <Slider
-                  defaultValue={25}
-                  aria-labelledby="guarantor-seller-split-label"
-                  step={1}
-                  marks
-                  min={1}
-                  max={99}
-                  valueLabelDisplay="auto"
-                  onChange={(event: object, value: number | number[]) => {
-                    this.handleGuarantorSellerSplitPercentageChange(value);
-                  }}
-                />
+                <FieldLabel label="Guarantor-Seller Split Percentage">
+                  <Slider
+                    defaultValue={25}
+                    // aria-labelledby="guarantor-seller-split-label"
+                    step={1}
+                    min={1}
+                    max={99}
+                    // valueLabelDisplay="auto"
+                    value={this.state.rawInputs.guarantorSellerSplitPercentage}
+                    onChange={(value: number) => {
+                      this.handleGuarantorSellerSplitPercentageChange(value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
                 <FieldLabel for="expirationDays" label="Auction Days">
@@ -434,8 +437,6 @@ export class CreateViewComponent extends React.Component<
                     name="expirationDays"
                     type="number"
                     defaultValue="3"
-                    // InputLabelProps={{ shrink: true }}
-                    // InputProps={{ inputProps: { min: 1 } }}
                     min="1"
                     onChange={(event: any) => {
                       this.handleExpirationDaysChange(event.target.value);
@@ -457,10 +458,6 @@ export class CreateViewComponent extends React.Component<
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  fullWidth
-                  size="medium"
-                  variant="contained"
-                  color="primary"
                   onClick={() => {
                     this.handleClick();
                   }}
@@ -471,9 +468,8 @@ export class CreateViewComponent extends React.Component<
                     this.state.transactionStatus ==
                       EthereumTransactionStatus.Success
                   }
-                  autoFocus
                 >
-                  Create
+                  Create Offer
                 </Button>
               </Grid>
             </Grid>

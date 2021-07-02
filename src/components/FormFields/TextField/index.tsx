@@ -16,11 +16,12 @@ type TextFieldProps = {
 const TextFieldStyled = styled.input`
   border: 2px solid #ffffff;
   border-radius: 10px;
-  padding: 8px 14px;
+  padding: 6px 14px;
   color: #ffffff;
   font-family: 'Oxygen', sans-serif;
   width: 100%;
   background: rgba(196, 196, 196, 0.38);
+  font-size: 19px;
 `;
 
 export const TextField = (props: TextFieldProps) => {
@@ -43,7 +44,7 @@ TextField.defaultProps = {
 
 type FieldLabelProps = {
   children: React.ReactNode;
-  for: string;
+  for?: string;
   label: string;
 };
 
@@ -109,8 +110,8 @@ const RadioLabelStyled = styled.label<{ active: boolean }>`
     content: '';
     display: inline-block;
     vertical-align: -4px;
-    height: 1em;
-    width: 1em;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     border: 2px solid rgba(0, 0, 0, 0.5);
     margin-right: 8px;
