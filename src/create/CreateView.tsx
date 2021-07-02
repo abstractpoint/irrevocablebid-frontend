@@ -47,7 +47,6 @@ type CreateViewState = {
     tokenAddress: string | null,
     tokenId: string | null;
     tokenType: AssetKind;
-    tokenQuantity: string | null;
     initialPrice: string | null;
     paymentTokenAddress: string | null;
     guarantorSellerSplitPercentage: number;
@@ -67,7 +66,6 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
       tokenAddress: null,
       tokenId: null,
       tokenType: AssetKind.ERC721,
-      tokenQuantity: null,
       initialPrice: null,
       paymentTokenAddress: "",
       guarantorSellerSplitPercentage: 25,
@@ -112,13 +110,6 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
       throw new Error(`Invalid token id: ${err.toString()}`);
     }
 
-    let tokenQuantity: BigNumber | null;
-    try {
-      tokenQuantity = this.state.rawInputs.tokenType == AssetKind.ERC1155 ? ethers.BigNumber.from(this.state.rawInputs.tokenQuantity) : null;
-    } catch (err) {
-      throw new Error(`Invalid token quantity: ${err.toString()}`);
-    }
-
     if (this.state.rawInputs.paymentTokenAddress === null)
       throw new Error(`Invalid payment token address`);
 
@@ -157,7 +148,7 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
 
     let asset: ERC721Asset | ERC1155Asset;
     if (this.state.rawInputs.tokenType == AssetKind.ERC1155) {
-      asset = {kind: AssetKind.ERC1155, tokenAddress, tokenId, tokenQuantity: tokenQuantity!};
+      asset = {kind: AssetKind.ERC1155, tokenAddress, tokenId, tokenQuantity: ethers.BigNumber.from(1)};
     } else {
       asset = {kind: AssetKind.ERC721, tokenAddress, tokenId};
     }
@@ -245,10 +236,6 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
     this.setState({...this.state, rawInputs: {...this.state.rawInputs, tokenType: value == "erc721" ? AssetKind.ERC721 : AssetKind.ERC1155}});
   }
 
-  handleTokenQuantityChange(value: string) {
-    this.setState({...this.state, rawInputs: {...this.state.rawInputs, tokenQuantity: value}});
-  }
-
   handleInitialPriceChange(value: string) {
     this.setState({...this.state, rawInputs: {...this.state.rawInputs, initialPrice: value}});
   }
@@ -292,11 +279,6 @@ export class CreateViewComponent extends React.Component<CreateViewProps, Create
                 </RadioGroup>
               </FormControl>
             </Grid>
-            {this.state.rawInputs.tokenType == AssetKind.ERC1155 &&
-              <Grid item xs={12}>
-                  <TextField name="tokenQuantity" variant="outlined" fullWidth label="Token Quantity"
-                             onChange={(event: any) => { this.handleTokenQuantityChange(event.target.value); }} />
-              </Grid>}
             <Grid item xs={12}>
               <TextField name="initialPrice" variant="outlined" fullWidth label="Initial Price"
                          onChange={(event: any) => { this.handleInitialPriceChange(event.target.value); }} />
