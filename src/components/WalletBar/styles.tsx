@@ -5,7 +5,7 @@ export const Container = styled.div`
   justify-content: space-between;
   padding: 20px 60px;
   height: 90px;
-  margin-bottom: 140px;
+  margin-bottom: 20px;
 `;
 
 export const Logo = styled.div`
