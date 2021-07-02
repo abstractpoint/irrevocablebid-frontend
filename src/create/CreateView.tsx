@@ -4,14 +4,9 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { Panel, PanelWrapper } from '../components/Panel';
 import { Typography } from '../components/Typography';
+import { TextField, FieldLabel, RadioGroup } from '../components/FormFields';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import Slider from '@material-ui/core/Slider';
 
 import * as ethers from 'ethers';
@@ -354,33 +349,29 @@ export class CreateViewComponent extends React.Component<
               justify="center"
             >
               <Grid item xs={12}>
-                <TextField
-                  name="tokenAddress"
-                  variant="outlined"
-                  fullWidth
-                  label="Token Address"
-                  autoFocus
-                  onChange={(event: any) => {
-                    this.handleTokenAddressChange(event.target.value);
-                  }}
-                />
+                <FieldLabel for="tokenAddress" label="Token Address">
+                  <TextField
+                    name="tokenAddress"
+                    onChange={(event: any) => {
+                      this.handleTokenAddressChange(event.target.value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  name="tokenId"
-                  variant="outlined"
-                  fullWidth
-                  label="Token ID"
-                  onChange={(event: any) => {
-                    this.handleTokenIdChange(event.target.value);
-                  }}
-                />
+                <FieldLabel for="tokenId" label="Token Id">
+                  <TextField
+                    name="tokenId"
+                    onChange={(event: any) => {
+                      this.handleTokenIdChange(event.target.value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Token Type</FormLabel>
+                <FieldLabel for="tokenType" label="Token Type">
                   <RadioGroup
-                    aria-label="tokenType"
+                    // aria-label="tokenType"
                     name="tokenType"
                     value={
                       this.state.rawInputs.tokenType == AssetKind.ERC721
@@ -390,42 +381,35 @@ export class CreateViewComponent extends React.Component<
                     onChange={(event: any) => {
                       this.handleTokenTypeChange(event.target.value);
                     }}
-                  >
-                    <FormControlLabel
-                      value="erc721"
-                      control={<Radio />}
-                      label="ERC721"
-                    />
-                    <FormControlLabel
-                      value="erc1155"
-                      control={<Radio />}
-                      label="ERC1155"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                    values={[
+                      { value: 'erc721', label: 'ERC721' },
+                      { value: 'erc1155', label: 'ERC1155' },
+                    ]}
+                  ></RadioGroup>
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  name="initialPrice"
-                  variant="outlined"
-                  fullWidth
-                  label="Initial Price"
-                  onChange={(event: any) => {
-                    this.handleInitialPriceChange(event.target.value);
-                  }}
-                />
+                <FieldLabel for="initialPrice" label="Initial Price">
+                  <TextField
+                    name="initialPrice"
+                    onChange={(event: any) => {
+                      this.handleInitialPriceChange(event.target.value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  name="paymentTokenAddress"
-                  variant="outlined"
-                  fullWidth
+                <FieldLabel
+                  for="paymentTokenAddress"
                   label="Payment Token Address"
-                  autoFocus
-                  onChange={(event: any) => {
-                    this.handlePaymentTokenAddressChange(event.target.value);
-                  }}
-                />
+                >
+                  <TextField
+                    name="paymentTokenAddress"
+                    onChange={(event: any) => {
+                      this.handlePaymentTokenAddressChange(event.target.value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
                 <Typography id="guarantor-seller-split-label">
@@ -445,19 +429,19 @@ export class CreateViewComponent extends React.Component<
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  name="expirationDays"
-                  variant="outlined"
-                  fullWidth
-                  label="Auction Days"
-                  type="number"
-                  defaultValue="3"
-                  InputLabelProps={{ shrink: true }}
-                  InputProps={{ inputProps: { min: 1 } }}
-                  onChange={(event: any) => {
-                    this.handleExpirationDaysChange(event.target.value);
-                  }}
-                />
+                <FieldLabel for="expirationDays" label="Auction Days">
+                  <TextField
+                    name="expirationDays"
+                    type="number"
+                    defaultValue="3"
+                    // InputLabelProps={{ shrink: true }}
+                    // InputProps={{ inputProps: { min: 1 } }}
+                    min="1"
+                    onChange={(event: any) => {
+                      this.handleExpirationDaysChange(event.target.value);
+                    }}
+                  />
+                </FieldLabel>
               </Grid>
               <Grid item xs={12}>
                 {this.state.error && <b>{this.state.error}</b>}

@@ -9,11 +9,12 @@ interface TypographyProps {
   children?: React.ReactNode;
 }
 
-export const Typography = (props: TypographyProps) => {
-  const TypographyStyled = styled.h3`
-    color: #ffffff;
-  `;
+const TypographyStyled = styled.h3`
+  color: #ffffff;
+  font-family: 'Oxygen', sans-serif;
+`;
 
+export const Typography = (props: TypographyProps) => {
   return <TypographyStyled>{props.children}</TypographyStyled>;
 };
 
