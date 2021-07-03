@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { Typography } from '../../components/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
@@ -25,9 +26,13 @@ export function ContractInfo(props: ContractInfoProps) {
   if (!props.contractInfo) {
     return (
       <div>
-        <h3>Contract Info</h3>
+        <Typography variant="h3" subVariant="listHeading">
+          Contract Info
+        </Typography>
         <List>
-          <ListItem>N/A</ListItem>
+          <ListItem>
+            <Typography variant="p">N/A</Typography>
+          </ListItem>
         </List>
       </div>
     );
@@ -35,10 +40,14 @@ export function ContractInfo(props: ContractInfoProps) {
 
   return (
     <div>
-      <h3>Contract Info</h3>
+      <Typography variant="h3" subVariant="listHeading">
+        Contract Info
+      </Typography>
       <List>
         <ListItem>
-          Seller:{' '}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Seller:{' '}
+          </Typography>
           <EthereumAddress
             context={props.context}
             address={props.contractInfo.sellerAddress}
@@ -46,7 +55,9 @@ export function ContractInfo(props: ContractInfoProps) {
           />
         </ListItem>
         <ListItem>
-          Escrow:{' '}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Escrow:{' '}
+          </Typography>
           <EthereumAddress
             context={props.context}
             address={props.contractInfo.escrowAddress}
@@ -54,15 +65,28 @@ export function ContractInfo(props: ContractInfoProps) {
           />
         </ListItem>
         <ListItem>
-          Expiration Time:{' '}
-          {formatExpirationTime(props.contractInfo.expirationTime)}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Expiration Time:{' '}
+          </Typography>
+          <Typography variant="p">
+            {formatExpirationTime(props.contractInfo.expirationTime)}
+          </Typography>
         </ListItem>
         <ListItem>
-          Split:{' '}
-          {formatPercent(props.contractInfo.guarantorSellerSplitBasisPoints)}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Split:{' '}
+          </Typography>
+          <Typography variant="p">
+            {formatPercent(props.contractInfo.guarantorSellerSplitBasisPoints)}
+          </Typography>
         </ListItem>
         <ListItem>
-          Service Fee: {formatPercent(props.contractInfo.serviceFeeBasisPoints)}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Service Fee:{' '}
+          </Typography>
+          <Typography variant="p">
+            {formatPercent(props.contractInfo.serviceFeeBasisPoints)}
+          </Typography>
         </ListItem>
       </List>
     </div>

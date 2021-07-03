@@ -1,13 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
-import { SellerEscrowBidInfo } from "../../../lib";
+import { SellerEscrowBidInfo } from '../../../lib';
 
-import { EthereumContext } from "../../helpers";
-import { EthereumAddress } from "../../components/EthereumAddress";
-import { TokenAmount } from "../../components/TokenAmount";
+import { Typography } from '../../components/Typography';
+import { EthereumContext } from '../../helpers';
+import { EthereumAddress } from '../../components/EthereumAddress';
+import { TokenAmount } from '../../components/TokenAmount';
 
 /******************************************************************************/
 /* Bid Info Component */
@@ -22,21 +23,56 @@ export function BidInfo(props: BidInfoProps) {
   if (!props.bidInfo) {
     return (
       <div>
-        <h3>Guaranteed Bid</h3>
+        <Typography variant="h3" subVariant={'listHeading'}>
+          Guaranteed Bid
+        </Typography>
         <List>
-          <ListItem>N/A</ListItem>
+          <ListItem>
+            <Typography variant="p">N/A</Typography>
+          </ListItem>
         </List>
       </div>
-    )
+    );
   }
 
   return (
     <div>
-      <h3>Guaranteed Bid</h3>
+      <Typography variant="h3" subVariant={'listHeading'}>
+        Guaranteed Bid
+      </Typography>
       <List>
-        <ListItem>Guarantor: <EthereumAddress context={props.context} address={props.bidInfo.guarantorAddress} /></ListItem>
-        <ListItem>Escrow: <EthereumAddress context={props.context} address={props.bidInfo.escrowAddress} /></ListItem>
-        <ListItem>Price: <TokenAmount context={props.context} address={props.bidInfo.paymentTokenAddress} amount={props.bidInfo.price} /></ListItem>
+        <ListItem>
+          <Typography variant="h4" subVariant={'listItemHeading'}>
+            Guarantor:{' '}
+          </Typography>
+          <EthereumAddress
+            context={props.context}
+            address={props.bidInfo.guarantorAddress}
+            variant={'view'}
+          />
+        </ListItem>
+        <ListItem>
+          <Typography variant="h4" subVariant={'listItemHeading'}>
+            Escrow:{' '}
+          </Typography>
+          <EthereumAddress
+            context={props.context}
+            address={props.bidInfo.escrowAddress}
+            variant={'view'}
+          />
+        </ListItem>
+        <ListItem>
+          <Typography variant="h4" subVariant={'listItemHeading'}>
+            Price:{' '}
+          </Typography>
+          <Typography variant="p">
+            <TokenAmount
+              context={props.context}
+              address={props.bidInfo.paymentTokenAddress}
+              amount={props.bidInfo.price}
+            />
+          </Typography>
+        </ListItem>
       </List>
     </div>
   );

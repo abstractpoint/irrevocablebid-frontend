@@ -269,7 +269,7 @@ class SellerViewComponent extends React.Component<
       <Layout>
         <Panel>
           <PanelWrapper>
-            <Typography component="h1" variant="h5" align="center">
+            <Typography variant="h1" style={{ marginBottom: '20px' }}>
               Seller
             </Typography>
             <ContractInfo

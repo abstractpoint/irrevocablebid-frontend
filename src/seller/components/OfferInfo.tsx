@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { AssetKind } from '../../../lib';
 import { SellerEscrowOfferInfo } from '../../../lib';
 
+import { Typography } from '../../components/Typography';
 import { EthereumContext } from '../../helpers';
 import { EthereumAddress } from '../../components/EthereumAddress';
 import { TokenAmount } from '../../components/TokenAmount';
@@ -23,9 +24,11 @@ export function OfferInfo(props: OfferInfoProps) {
   if (!props.offerInfo) {
     return (
       <div>
-        <h3>Offer Info</h3>
+        <Typography variant="h3" subVariant="listHeading">
+          Offer Info
+        </Typography>
         <List>
-          <ListItem>N/A</ListItem>
+          <Typography variant="p">N/A</Typography>
         </List>
       </div>
     );
@@ -33,10 +36,15 @@ export function OfferInfo(props: OfferInfoProps) {
 
   return (
     <div>
-      <h3>Offer Info</h3>
+      <Typography variant="h3" subVariant="listHeading">
+        Offer Info
+      </Typography>
       <List>
         <ListItem>
-          Token Address:{' '}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Token Address:{' '}
+          </Typography>
+
           <EthereumAddress
             context={props.context}
             address={props.offerInfo.asset.tokenAddress}
@@ -44,24 +52,46 @@ export function OfferInfo(props: OfferInfoProps) {
           />
         </ListItem>
         <ListItem>
-          Token ID: {props.offerInfo.asset.tokenId.toString()}
+          <Typography variant="h4" subVariant="listItemHeading">
+            Token ID:
+          </Typography>
+          <Typography variant="p">
+            {props.offerInfo.asset.tokenId.toString()}
+          </Typography>
         </ListItem>
         {props.offerInfo.asset.kind == AssetKind.ERC1155 && (
           <ListItem>
-            Token Quantity: {props.offerInfo.asset.tokenQuantity.toString()}
+            <Typography variant="h4" subVariant="listItemHeading">
+              Token Quantity:
+            </Typography>
+            <Typography variant="p">
+              {props.offerInfo.asset.tokenQuantity.toString()}
+            </Typography>
           </ListItem>
         )}
         <ListItem>
-          Starting Price:{' '}
-          <TokenAmount
-            context={props.context}
-            address={props.offerInfo.paymentTokenAddress}
-            amount={props.offerInfo.startingPrice}
-          />
+          <Typography variant="h4" subVariant="listItemHeading">
+            Starting Price:{' '}
+          </Typography>
+          <Typography variant="p">
+            <TokenAmount
+              context={props.context}
+              address={props.offerInfo.paymentTokenAddress}
+              amount={props.offerInfo.startingPrice}
+            />
+          </Typography>
         </ListItem>
         <ListItem>
-          Market Link:{' '}
-          <a href={props.offerInfo.marketLink}>{props.offerInfo.marketLink}</a>
+          <Typography variant="h4" subVariant="listItemHeading">
+            Market Link:
+          </Typography>
+          <Typography
+            variant="a"
+            href={props.offerInfo.marketLink}
+            target="_blank"
+          >
+            {`${props.offerInfo.marketLink.slice(0, 24)}...`}
+          </Typography>
         </ListItem>
       </List>
     </div>
