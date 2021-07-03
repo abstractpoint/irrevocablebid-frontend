@@ -14,5 +14,6 @@ export default createGlobalStyle`
   :root {
     --action-orange: #EF5233;
     --neon-green: #24FF00;
+    --dark-purple: #45354C;
   }
 `;

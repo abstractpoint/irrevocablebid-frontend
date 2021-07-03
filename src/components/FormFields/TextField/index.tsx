@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { ThemedCssFunction, DefaultTheme } from 'styled-components';
 
 /******************************************************************************/
 /* TextField */
@@ -11,9 +11,14 @@ type TextFieldProps = {
   type?: string;
   defaultValue?: string;
   min?: string;
+  styles?: any;
 };
 
-const TextFieldStyled = styled.input`
+// background-image: url(${(props: { bg: string }) => props.bg});
+const TextFieldStyled = styled.input<{
+  styles: any;
+}>`
+  ${(props) => props.styles}
   border: 2px solid #ffffff;
   border-radius: 10px;
   padding: 6px 14px;
@@ -33,6 +38,7 @@ export const TextField = (props: TextFieldProps) => {
         name={props.name}
         onChange={props.onChange}
         min={props.min}
+        styles={props.styles}
       />
     </div>
   );

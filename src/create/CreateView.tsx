@@ -10,6 +10,7 @@ import {
   RadioGroup,
 } from '../components/FormFields/TextField';
 import { Slider } from '../components/FormFields/Slider';
+import { TextSelect } from '../components/FormFields/TextSelect';
 import { Button } from '../components/Button';
 import Grid from '@material-ui/core/Grid';
 
@@ -65,6 +66,21 @@ type CreateViewState = {
   transactionStatus: EthereumTransactionStatus;
 };
 
+const PAYMENT_TOKEN_OPTIONS = [
+  {
+    value: '0xc778417e063141139fce010982780140aa0cd5ab',
+    label: 'wETH',
+  },
+  {
+    value: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
+    label: 'DAI',
+  },
+  {
+    value: '0xeb8f08a975ab53e34d8a0330e0d34de942c95926',
+    label: 'USDC',
+  },
+];
+
 export class CreateViewComponent extends React.Component<
   CreateViewProps,
   CreateViewState
@@ -91,6 +107,8 @@ export class CreateViewComponent extends React.Component<
     });
 
     this.checkWalletConnected();
+    /* set the default payment token address in state.rawInputs.paymentTokenAddress */
+    this.handlePaymentTokenAddressChange(PAYMENT_TOKEN_OPTIONS[0].value);
   }
 
   async checkWalletConnected() {
@@ -345,13 +363,7 @@ export class CreateViewComponent extends React.Component<
             <Typography component="h1" variant="h5" align="left">
               Sell
             </Typography>
-            <Grid
-              container
-              xs={12}
-              spacing={2}
-              alignItems="center"
-              justify="center"
-            >
+            <Grid container spacing={2} alignItems="center" justify="center">
               <Grid item xs={12}>
                 <FieldLabel for="tokenAddress" label="Token Address">
                   <TextField
@@ -375,7 +387,6 @@ export class CreateViewComponent extends React.Component<
               <Grid item xs={12}>
                 <FieldLabel for="tokenType" label="Token Type">
                   <RadioGroup
-                    // aria-label="tokenType"
                     name="tokenType"
                     value={
                       this.state.rawInputs.tokenType == AssetKind.ERC721
@@ -394,24 +405,17 @@ export class CreateViewComponent extends React.Component<
               </Grid>
               <Grid item xs={12}>
                 <FieldLabel for="initialPrice" label="Initial Price">
-                  <TextField
+                  <TextSelect
                     name="initialPrice"
                     onChange={(event: any) => {
                       this.handleInitialPriceChange(event.target.value);
                     }}
-                  />
-                </FieldLabel>
-              </Grid>
-              <Grid item xs={12}>
-                <FieldLabel
-                  for="paymentTokenAddress"
-                  label="Payment Token Address"
-                >
-                  <TextField
-                    name="paymentTokenAddress"
-                    onChange={(event: any) => {
-                      this.handlePaymentTokenAddressChange(event.target.value);
+                    selectName="paymentTokenAddress"
+                    selectOnChange={(value: string) => {
+                      this.handlePaymentTokenAddressChange(value);
                     }}
+                    selectOptions={PAYMENT_TOKEN_OPTIONS}
+                    selectDefaultValue={PAYMENT_TOKEN_OPTIONS[0]}
                   />
                 </FieldLabel>
               </Grid>
@@ -419,11 +423,9 @@ export class CreateViewComponent extends React.Component<
                 <FieldLabel label="Guarantor-Seller Split Percentage">
                   <Slider
                     defaultValue={25}
-                    // aria-labelledby="guarantor-seller-split-label"
                     step={1}
                     min={1}
                     max={99}
-                    // valueLabelDisplay="auto"
                     value={this.state.rawInputs.guarantorSellerSplitPercentage}
                     onChange={(value: number) => {
                       this.handleGuarantorSellerSplitPercentageChange(value);
@@ -435,7 +437,7 @@ export class CreateViewComponent extends React.Component<
                 <FieldLabel for="expirationDays" label="Auction Days">
                   <TextField
                     name="expirationDays"
-                    type="number"
+                    type="text"
                     defaultValue="3"
                     min="1"
                     onChange={(event: any) => {
