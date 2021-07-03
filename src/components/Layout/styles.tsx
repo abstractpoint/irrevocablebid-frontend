@@ -5,6 +5,6 @@ export const LayoutDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 60px 80px;
+  padding: 60px 160px;
   height: 100%;
 `;
