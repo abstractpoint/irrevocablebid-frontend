@@ -79,6 +79,7 @@ export function EthereumAddress(props: EthereumAddressProps) {
       href={
         props.context.deployment.explorerBaseURL + '/address/' + props.address
       }
+      target="_blank"
     >
       <GreenCircle />
       {truncateAddr(props.address)}

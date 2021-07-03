@@ -4,11 +4,9 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { Panel, PanelWrapper } from '../components/Panel';
 import { Typography } from '../components/Typography';
-import {
-  TextField,
-  FieldLabel,
-  RadioGroup,
-} from '../components/FormFields/TextField';
+import { TextField } from '../components/FormFields/TextField';
+import { FieldLabel } from '../components/FormFields/FieldLabel';
+import { RadioGroup } from '../components/FormFields/RadioGroup';
 import { Slider } from '../components/FormFields/Slider';
 import { TextSelect } from '../components/FormFields/TextSelect';
 import { Button } from '../components/Button';

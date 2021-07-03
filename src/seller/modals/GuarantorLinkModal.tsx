@@ -1,13 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Button from '@material-ui/core/Button';
+import { DialogStyled } from '../../components/DialogStyled';
+import { Button } from '../../components/Button';
+import { Typography } from '../../components/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import { SellerEscrow } from "../../../lib";
-import { serializeSellOrder } from "../../../lib";
+import { SellerEscrow } from '../../../lib';
+import { serializeSellOrder } from '../../../lib';
 
 /******************************************************************************/
 /* Guarantor Link Modal Component */
@@ -21,24 +23,34 @@ type GuarantorLinkModalProps = {
 
 export function GuarantorLinkModal(props: GuarantorLinkModalProps) {
   const sellOrderData = serializeSellOrder(props.sellerEscrow.sellOrder);
-  const urlSearchParams = new URLSearchParams({sell: sellOrderData});
-  const guaranteeURL = window.location.origin + "/#/guarantee/?" + urlSearchParams.toString();
+  const urlSearchParams = new URLSearchParams({ sell: sellOrderData });
+  const guaranteeURL =
+    window.location.origin + '/#/guarantee/?' + urlSearchParams.toString();
 
   return (
-    <Dialog open={props.open} onClose={props.onClose} aria-labelledby="simple-modal-title" >
-      <div>
+    <Dialog
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="simple-modal-title"
+    >
+      <DialogStyled>
         <DialogTitle id="simple-modal-title">Guarantor Link</DialogTitle>
         <DialogContent>
-          <a href={guaranteeURL}>
+          <Typography variant="p" style={{ overflowWrap: 'break-word' }}>
             {guaranteeURL}
-          </a>
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={props.onClose}>
+          <Button
+            color="primary"
+            variant="text"
+            size="small"
+            onClick={props.onClose}
+          >
             Close
           </Button>
         </DialogActions>
-      </div>
+      </DialogStyled>
     </Dialog>
   );
 }

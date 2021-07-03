@@ -4,8 +4,8 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { Panel, PanelWrapper } from '../components/Panel';
 import { Typography } from '../components/Typography';
+import { Button } from '../components/Button';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import { SellOrder, BuyOrder } from '../../lib';
@@ -290,6 +290,13 @@ class SellerViewComponent extends React.Component<
             />
             <Grid container spacing={1}>
               {SellerViewButtons.map((button) => {
+                const isDisabled =
+                  this.state.sellerEscrowInfo.state === null ||
+                  !this.state.sellerEscrowInfo.isOwner ||
+                  !button.isVisible(this.state.sellerEscrowInfo.state);
+                if (isDisabled) {
+                  return null;
+                }
                 return (
                   <Grid
                     container
@@ -298,18 +305,11 @@ class SellerViewComponent extends React.Component<
                     justify="center"
                     xs={12}
                     spacing={1}
+                    key={button.name}
                   >
                     <Grid item xs={6}>
                       <Button
-                        fullWidth
-                        size="medium"
-                        variant="contained"
-                        color="primary"
-                        disabled={
-                          this.state.sellerEscrowInfo.state === null ||
-                          !this.state.sellerEscrowInfo.isOwner ||
-                          !button.isVisible(this.state.sellerEscrowInfo.state)
-                        }
+                        disabled={isDisabled}
                         onClick={() => {
                           this.handleClick(button.modal);
                         }}
