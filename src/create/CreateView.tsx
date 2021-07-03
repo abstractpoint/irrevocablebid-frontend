@@ -66,21 +66,6 @@ type CreateViewState = {
   transactionStatus: EthereumTransactionStatus;
 };
 
-const PAYMENT_TOKEN_OPTIONS = [
-  {
-    value: '0xc778417e063141139fce010982780140aa0cd5ab',
-    label: 'wETH',
-  },
-  {
-    value: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
-    label: 'DAI',
-  },
-  {
-    value: '0xeb8f08a975ab53e34d8a0330e0d34de942c95926',
-    label: 'USDC',
-  },
-];
-
 export class CreateViewComponent extends React.Component<
   CreateViewProps,
   CreateViewState
@@ -108,7 +93,12 @@ export class CreateViewComponent extends React.Component<
 
     this.checkWalletConnected();
     /* set the default payment token address in state.rawInputs.paymentTokenAddress */
-    this.handlePaymentTokenAddressChange(PAYMENT_TOKEN_OPTIONS[0].value);
+    this.handlePaymentTokenAddressChange(
+      this.props.context.deployment &&
+        this.props.context.deployment.paymentTokens.length
+        ? this.props.context.deployment.paymentTokens[0].address
+        : ''
+    );
   }
 
   async checkWalletConnected() {
@@ -188,7 +178,12 @@ export class CreateViewComponent extends React.Component<
 
     let asset: ERC721Asset | ERC1155Asset;
     if (this.state.rawInputs.tokenType == AssetKind.ERC1155) {
-      asset = {kind: AssetKind.ERC1155, tokenAddress, tokenId, tokenQuantity: ethers.BigNumber.from(1)};
+      asset = {
+        kind: AssetKind.ERC1155,
+        tokenAddress,
+        tokenId,
+        tokenQuantity: ethers.BigNumber.from(1),
+      };
     } else {
       asset = { kind: AssetKind.ERC721, tokenAddress, tokenId };
     }
@@ -414,8 +409,28 @@ export class CreateViewComponent extends React.Component<
                     selectOnChange={(value: string) => {
                       this.handlePaymentTokenAddressChange(value);
                     }}
-                    selectOptions={PAYMENT_TOKEN_OPTIONS}
-                    selectDefaultValue={PAYMENT_TOKEN_OPTIONS[0]}
+                    selectOptions={
+                      this.props.context.deployment
+                        ? this.props.context.deployment.paymentTokens.map(
+                            (e) => {
+                              return { label: e.symbol, value: e.address };
+                            }
+                          )
+                        : []
+                    }
+                    selectDefaultValue={
+                      this.props.context.deployment &&
+                      this.props.context.deployment.paymentTokens.length
+                        ? {
+                            label:
+                              this.props.context.deployment.paymentTokens[0]
+                                .symbol,
+                            value:
+                              this.props.context.deployment.paymentTokens[0]
+                                .address,
+                          }
+                        : { label: '', value: '' }
+                    }
                   />
                 </FieldLabel>
               </Grid>
