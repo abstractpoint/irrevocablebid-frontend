@@ -45,6 +45,10 @@ class App extends React.Component<{}, AppState> {
     const deployment = Deployments[network.chainId];
 
     this.setState({ ...this.state, context: { provider, deployment } });
+
+    (window as any).ethereum.on('chainChanged', (chainId: string) =>
+      window.location.reload()
+    );
   }
 
   render() {
