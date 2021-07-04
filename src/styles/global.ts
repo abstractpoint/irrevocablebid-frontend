@@ -18,4 +18,11 @@ export default createGlobalStyle`
     --cancel-gray: #6a6969;
     --error-red: #ff6166;
   }
+  .MuiListItem-secondaryAction.Mui-selected {
+    background-color: var(--action-orange)!important;
+    border-radius: 6px;
+  }
+  .MuiListItem-secondaryAction {
+    border-radius: 6px;
+  }
 `;
