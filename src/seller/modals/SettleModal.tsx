@@ -122,7 +122,7 @@ export class SettleModal extends React.Component<
                   <TokenAmount
                     context={this.props.context}
                     address={this.props.settlementInfo.paymentTokenAddress}
-                    amount={this.props.settlementInfo.serviceFee}
+                    amount={this.props.settlementInfo.guarantorAmount}
                   />
                 </Typography>
               </ListItem>
