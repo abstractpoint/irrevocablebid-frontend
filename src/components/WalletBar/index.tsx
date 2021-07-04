@@ -1,8 +1,9 @@
 import * as React from 'react';
+import styled from 'styled-components';
 
-import { Container, Logo, Wallet, Button } from './styles';
 import logo from '../../assets/irrevocable-logo.svg';
 
+import { Button } from '../Button';
 import { EthereumContext } from '../../helpers';
 import { EthereumAddress } from '../EthereumAddress';
 
@@ -18,6 +19,35 @@ type WalletBarState = {
   accountRequest: Promise<string[]> | null;
   accountAddress: string | null;
 };
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 60px;
+  height: 90px;
+  margin-bottom: 20px;
+`;
+
+const Logo = styled.div`
+  background-image: url(${(props: { bg: string }) => props.bg});
+  height: 50px;
+  width: 200px;
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
+const Wallet = styled.div`
+  display: flex;
+`;
+
+// const Button = styled.button`
+//   background-color: var(--action-orange);
+//   width: 284px;
+//   height: 81px;
+//   border-radius: 26px;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+// `;
 
 export class WalletBar extends React.Component<WalletBarProps, WalletBarState> {
   state: WalletBarState = {
@@ -74,7 +104,7 @@ export class WalletBar extends React.Component<WalletBarProps, WalletBarState> {
                 this.requestAccounts();
               }}
               disabled={this.state.accountRequest !== null}
-              color="inherit"
+              variant="primary"
             >
               Connect Wallet
             </Button>
