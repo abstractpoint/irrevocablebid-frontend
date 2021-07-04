@@ -1,0 +1,212 @@
+.auction-visualizer > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.auction-visualizer > svg text {
+  fill: white;
+}
+
+.auction-visualizer > svg line,
+.auction-visualizer > svg rect {
+  shape-rendering: crispEdges;
+}
+
+.auction-visualizer > svg > [data-name='floor'] > line {
+  stroke-linecap: round;
+}
+
+.auction-visualizer > svg > [data-name='floor'] > [data-name='permanent'] {
+  stroke: grey;
+  stroke-width: 1;
+}
+
+.auction-visualizer > svg > [data-name='floor'] > [data-name='active'] {
+  stroke: orange;
+  stroke-width: 3;
+}
+
+.auction-visualizer > svg > [data-name='floor'] > [data-name='label'] {
+  transform: translateY(-10px);
+  fill: orange;
+  font-weight: bold;
+}
+
+.auction-visualizer > svg > [data-name='floor'] > [data-name='value'] {
+  text-anchor: end;
+  transform: translateY(-10px);
+}
+
+.auction-visualizer > svg [data-name='path--below-floor'] {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.auction-visualizer > svg [data-name='path--above-floor'] {
+  fill: none;
+  stroke: orange;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.auction-visualizer > svg > [data-name='current-bid'] {
+  opacity: 0.5;
+}
+
+.auction-visualizer > svg > [data-name='current-bid'] line {
+  stroke: grey;
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+}
+
+.auction-visualizer > svg > [data-name='current-bid'] text {
+  dominant-baseline: middle;
+  alignment-baseline: middle;
+  fill: grey;
+  transform: translateX(5px);
+}
+
+.auction-visualizer > svg > [data-name='profit-split'] line {
+  stroke: grey;
+  stroke-width: 1;
+  stroke-dasharray: 4 2;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='middle']
+  > text {
+  dominant-baseline: middle;
+  alignment-baseline: middle;
+  font-size: 0.7em;
+  transform: translateX(5px);
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  text[data-name='guarantor-percent'] {
+  dominant-baseline: auto;
+  alignment-baseline: auto;
+  transform: translate(5px, -10px);
+  font-style: italic;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  text[data-name='consignor-percent'] {
+  dominant-baseline: hanging;
+  alignment-baseline: hanging;
+  transform: translate(5px, 10px);
+  font-style: italic;
+}
+
+.auction-visualizer > svg > [data-name='profit-split'] rect {
+  fill: rgba(255, 255, 255, 0.1);
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='bars']
+  [data-name='label'] {
+  fill: rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='bars']
+  [data-name='label'] {
+  dominant-baseline: middle;
+  alignment-baseline: middle;
+  text-anchor: middle;
+  transform: translate(0, 0.1em);
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='bars']
+  [data-name='value'] {
+  transform: translate(15px, 0.1em);
+  dominant-baseline: middle;
+  alignment-baseline: middle;
+  fill: greenyellow;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='bars']
+  [data-name='message']
+  text {
+  transform: translate(15px, -1em);
+  fill: greenyellow;
+  font-weight: bold;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='profit-split']
+  > [data-name='final-price'] {
+  text-anchor: middle;
+  fill: white;
+  font-weight: bold;
+  transform: translateY(-10px);
+  font-size: 1.2em;
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] rect {
+  fill: rgba(0, 0, 0, 0.7);
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] line {
+  stroke: white;
+  stroke-width: 1;
+  opacity: 0.15;
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] {
+  font-size: 0.85em;
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] text {
+  fill: rgb(68, 68, 68);
+  text-anchor: end;
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] > [data-name='label'] {
+  transform: translate(0, 5px);
+  dominant-baseline: hanging;
+  alignment-baseline: hanging;
+}
+
+.auction-visualizer > svg > [data-name='initial-price'] > [data-name='value'] {
+  fill: rgb(112, 112, 112);
+  transform: translate(0, -5px);
+  font-weight: bold;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='bidding-markers']
+  > [data-name='below'] {
+  fill: grey;
+}
+
+.auction-visualizer
+  > svg
+  > [data-name='bidding-markers']
+  > [data-name='above'] {
+  fill: orange;
+}

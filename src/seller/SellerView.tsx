@@ -30,6 +30,7 @@ import { ContractInfo } from './components/ContractInfo';
 import { OfferInfo } from './components/OfferInfo';
 import { BidInfo } from './components/BidInfo';
 import { SettlementInfo } from './components/SettlementInfo';
+import { VisualizerPanel } from './components/VisualizerPanel';
 
 import { DepositModal } from './modals/DepositModal';
 import { ApproveGuarantorModal } from './modals/ApproveGuarantorModal';
@@ -267,6 +268,19 @@ class SellerViewComponent extends React.Component<
   render() {
     return (
       <Layout>
+        {this.state.sellerEscrowInfo.state &&
+          this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed && (
+            <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
+              <PanelWrapper>
+                <VisualizerPanel
+                  pollOffers={
+                    this.state.sellerEscrow &&
+                    this.state.sellerEscrow.pollOffers
+                  }
+                />
+              </PanelWrapper>
+            </Panel>
+          )}
         <Panel>
           <PanelWrapper>
             <Typography variant="h1" style={{ marginBottom: '20px' }}>

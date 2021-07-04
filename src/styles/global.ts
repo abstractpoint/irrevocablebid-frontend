@@ -28,4 +28,8 @@ export default createGlobalStyle`
   .CheckCircleIcon__ActionOrange {
     color: var(--action-orange)!important;
   }
+  .MuiPaper-root.MuiDialog-paper {
+    border-radius: 16px;
+    background: #45354c;
+  }
 `;

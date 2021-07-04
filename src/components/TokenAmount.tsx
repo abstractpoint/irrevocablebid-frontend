@@ -1,9 +1,9 @@
-import * as React from "react";
+import * as React from 'react';
 
-import * as ethers from "ethers";
-import { BigNumber } from "@ethersproject/bignumber";
+import * as ethers from 'ethers';
+import { BigNumber } from '@ethersproject/bignumber';
 
-import { EthereumContext, lookupTokenInfo } from "../helpers";
+import { EthereumContext, lookupTokenInfo } from '../helpers';
 
 /******************************************************************************/
 /* Token Amount Component */
@@ -27,12 +27,14 @@ export class TokenAmount extends React.Component<TokenAmountProps, {}> {
   };
 
   async componentDidMount() {
-    if (!this.props.context.provider)
-      return;
+    if (!this.props.context.provider) return;
 
     try {
-      const {symbol, decimals} = await lookupTokenInfo(this.props.context.provider, this.props.address);
-      this.setState({decimals, symbol});
+      const { symbol, decimals } = await lookupTokenInfo(
+        this.props.context.provider,
+        this.props.address
+      );
+      this.setState({ decimals, symbol });
     } catch (error) {
       return;
     }
@@ -46,7 +48,10 @@ export class TokenAmount extends React.Component<TokenAmountProps, {}> {
     }
 
     return (
-      <span className="token-amount">{ethers.utils.formatUnits(this.props.amount, this.state.decimals)} {this.state.symbol}</span>
+      <span className="token-amount">
+        {ethers.utils.formatUnits(this.props.amount, this.state.decimals)}{' '}
+        {this.state.symbol}
+      </span>
     );
   }
 }

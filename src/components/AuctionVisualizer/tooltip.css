@@ -1,0 +1,23 @@
+.auction-visualizer [data-name='tooltip'] {
+  text-align: left;
+  position: absolute;
+  background-color: rgba(30, 30, 30, 0.95);
+  pointer-events: none;
+  display: none;
+  padding: 8px 10px;
+  font-size: 12px;
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.auction-visualizer [data-name='tooltip'] tr td {
+  padding-right: 10px;
+}
+
+.auction-visualizer [data-name='tooltip'] tr td:first-child {
+  color: grey;
+}
+
+.auction-visualizer [data-name='tooltip'] tr:first-child td {
+  font-weight: bold;
+  color: white;
+}

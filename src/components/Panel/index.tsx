@@ -12,8 +12,12 @@ export const PanelWrapDiv = styled.div`
   padding: 26px 24px;
 `;
 
-export const Panel = (props: { children: React.ReactNode }) => {
-  return <PanelDiv>{props.children}</PanelDiv>;
+type PanelProps = {
+  children: React.ReactNode;
+  style?: object;
+};
+export const Panel = (props: PanelProps) => {
+  return <PanelDiv style={props.style}>{props.children}</PanelDiv>;
 };
 
 export const PanelWrapper = (props: { children: React.ReactNode }) => {
