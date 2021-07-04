@@ -1,12 +1,14 @@
-import * as React from "react";
+import * as React from 'react';
+import styled from 'styled-components';
 
+import { Typography } from '../components/Typography';
+import { ProgressIndicator } from '../components/ProgressIndicator';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import ErrorOutlineOutlinedIcon from '@material-ui/icons/ErrorOutlineOutlined';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
-import * as ethers from "ethers";
+import * as ethers from 'ethers';
 
-import { EthereumContext } from "../helpers";
+import { EthereumContext } from '../helpers';
 
 /******************************************************************************/
 /* Ethereum Transaction Component */
@@ -17,11 +19,11 @@ export enum EthereumTransactionStatus {
   Pending,
   Success,
   Failure,
-};
+}
 
 type EthereumTransactionProps = {
   context: EthereumContext;
-  transaction: ethers.ContractTransaction;
+  transaction?: ethers.ContractTransaction;
   onComplete: (success: boolean) => void;
 };
 
@@ -29,35 +31,62 @@ type EthereumTransactionState = {
   receipt?: ethers.ContractReceipt;
 };
 
-export class EthereumTransaction extends React.Component<EthereumTransactionProps, EthereumTransactionState> {
+const TransactionWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+export class EthereumTransaction extends React.Component<
+  EthereumTransactionProps,
+  EthereumTransactionState
+> {
   state: EthereumTransactionState = {};
 
   async componentDidMount() {
     const receipt = await this.props.transaction.wait();
-    this.setState({...this.state, receipt});
-
+    this.setState({ ...this.state, receipt });
     this.props.onComplete(receipt.status == 1);
   }
 
   render() {
     if (this.state.receipt && this.state.receipt.status == 1) {
       return (
-        <span className="ethereum-transaction">Transaction succeeded! <CheckCircleOutlineOutlinedIcon /></span>
+        <Typography variant="h3">
+          Transaction succeeded! <CheckCircleOutlineOutlinedIcon />
+        </Typography>
       );
     } else if (this.state.receipt && this.state.receipt.status == 0) {
       return (
-        <span className="ethereum-transaction">Transaction failed! <ErrorOutlineOutlinedIcon /></span>
+        <Typography variant="h3">
+          Transaction failed! <ErrorOutlineOutlinedIcon />
+        </Typography>
       );
     } else {
       const txid = this.props.transaction.hash.toString();
 
       if (this.props.context.deployment) {
         return (
-          <span className="ethereum-transaction">Pending transaction: <a href={this.props.context.deployment.explorerBaseURL + "/tx/" + txid}>{txid}</a> <CircularProgress /></span>
+          <TransactionWrapper>
+            <Typography variant="h3">Pending transaction: </Typography>
+            <Typography
+              variant="a"
+              target="_blank"
+              href={
+                this.props.context.deployment.explorerBaseURL + '/tx/' + txid
+              }
+            >
+              {`${txid.slice(0, 24)}...`}
+            </Typography>{' '}
+            <ProgressIndicator />
+          </TransactionWrapper>
         );
       } else {
         return (
-          <span className="ethereum-transaction">Pending transaction: {txid} <CircularProgress /></span>
+          <TransactionWrapper>
+            <Typography variant="h3">Pending transaction:</Typography>
+            {`${txid.slice(0, 24)}...`} <ProgressIndicator />
+          </TransactionWrapper>
         );
       }
     }
