@@ -272,6 +272,14 @@ export class GuarantorViewComponent extends React.Component<
             />
             <Grid container spacing={1}>
               {GuarantorViewButtons.map((button) => {
+                const isDisabled =
+                  this.state.guarantorEscrowInfo.state === null ||
+                  !this.state.guarantorEscrowInfo.isOwner ||
+                  !button.isVisible(this.state.guarantorEscrowInfo.state);
+
+                if (isDisabled) {
+                  return null;
+                }
                 return (
                   <Grid
                     container
@@ -285,13 +293,7 @@ export class GuarantorViewComponent extends React.Component<
                     <Grid item xs={6}>
                       <Button
                         color="primary"
-                        disabled={
-                          this.state.guarantorEscrowInfo.state === null ||
-                          !this.state.guarantorEscrowInfo.isOwner ||
-                          !button.isVisible(
-                            this.state.guarantorEscrowInfo.state
-                          )
-                        }
+                        disabled={isDisabled}
                         onClick={() => {
                           this.handleClick(button.modal);
                         }}

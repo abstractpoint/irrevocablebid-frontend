@@ -208,7 +208,7 @@ export class ApproveGuarantorModal extends React.Component<
             )}
             <FieldLabel label="Guarentor Bid">
               <TextArea
-                rows={6}
+                rows={9}
                 onChange={(event: any) => {
                   this.handleChange(event.target.value);
                 }}

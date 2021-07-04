@@ -12,6 +12,7 @@ type ButtonProps = {
 };
 
 const Primary = styled.button`
+  width: 100%;
   padding: 16px 28px;
   background: var(--action-orange);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -38,6 +39,12 @@ export const Button = (props: ButtonProps) => {
       ...style,
       background: 'transparent',
       textColor: 'var(--action-orange)',
+    };
+  }
+  if (props.disabled) {
+    style = {
+      ...style,
+      backgroundColor: 'var(--cancel-gray)',
     };
   }
   if (props.size === 'small') {
