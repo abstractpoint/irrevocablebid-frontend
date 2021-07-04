@@ -460,7 +460,9 @@ export class CreateViewComponent extends React.Component<
                 </FieldLabel>
               </Grid>
               <Grid item xs={12}>
-                {this.state.error && <b>{this.state.error}</b>}
+                {this.state.error && (
+                  <Typography variant="error">{this.state.error}</Typography>
+                )}
                 {this.state.transaction && (
                   <EthereumTransaction
                     context={this.props.context}

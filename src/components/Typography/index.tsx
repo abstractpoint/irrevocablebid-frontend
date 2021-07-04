@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { OpenInNew } from '@material-ui/icons';
 
 interface TypographyProps {
@@ -13,30 +13,38 @@ interface TypographyProps {
   subVariant?: string;
 }
 
-const H1Styled = styled.h1`
-  color: #ffffff;
+const shared = css`
   font-family: 'Oxygen', sans-serif;
+`;
+
+const H1Styled = styled.h1`
+  ${shared}
+  color: #ffffff;
 `;
 const H3Styled = styled.h3`
+  ${shared}
   color: #ffffff;
-  font-family: 'Oxygen', sans-serif;
 `;
 const H4Styled = styled.h4`
+  ${shared}
   color: #ffffff;
-  font-family: 'Oxygen', sans-serif;
 `;
 const PStyled = styled.p`
+  ${shared}
   color: #ffffff;
-  font-family: 'Oxygen', sans-serif;
   font-weight: 300;
 `;
 const AStyled = styled.a`
+  ${shared}
   color: #ffffff;
-  font-family: 'Oxygen', sans-serif;
   font-weight: 300;
   cursor: pointer;
   display: flex;
   align-items: center;
+`;
+const ErrorStyled = styled.h5`
+  ${shared}
+  color: var(--error-red);
 `;
 
 export const Typography = (props: TypographyProps) => {
@@ -62,6 +70,8 @@ export const Typography = (props: TypographyProps) => {
     Component = H4Styled;
   } else if (props.variant === 'p') {
     Component = PStyled;
+  } else if (props.variant === 'error') {
+    Component = ErrorStyled;
   } else if (props.variant === 'a') {
     return (
       <AStyled href={props.href} target={props.target} style={style}>

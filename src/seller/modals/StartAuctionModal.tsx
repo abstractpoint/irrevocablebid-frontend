@@ -94,7 +94,9 @@ export class StartAuctionModal extends React.Component<
                 </Typography>
               </ListItem>
             </List>
-            {this.state.error && <b>{this.state.error}</b>}
+            {this.state.error && (
+              <Typography variant="error">{this.state.error}</Typography>
+            )}
           </DialogContent>
           <DialogActions>
             <Button

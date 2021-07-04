@@ -16,5 +16,6 @@ export default createGlobalStyle`
     --neon-green: #24FF00;
     --dark-purple: #45354C;
     --cancel-gray: #6a6969;
+    --error-red: #ff6166;
   }
 `;

@@ -15,7 +15,8 @@ const TextAreaStyled = styled.textarea`
   font-family: 'Oxygen', sans-serif;
   width: 100%;
   background: rgba(196, 196, 196, 0.38);
-  font-size: 19px;
+  font-size: 16px;
+  resize: none;
 `;
 
 export const TextArea = (props: TextAreaProps) => {

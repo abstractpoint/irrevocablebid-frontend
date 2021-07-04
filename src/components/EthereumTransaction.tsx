@@ -23,7 +23,7 @@ export enum EthereumTransactionStatus {
 
 type EthereumTransactionProps = {
   context: EthereumContext;
-  transaction?: ethers.ContractTransaction;
+  transaction: ethers.ContractTransaction;
   onComplete: (success: boolean) => void;
 };
 

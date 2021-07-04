@@ -285,7 +285,9 @@ export class GuaranteeViewComponent extends React.Component<
               contractInfo={this.state.sellerEscrowInfo.contractInfo}
               offerInfo={this.state.sellerEscrowInfo.offerInfo}
             />
-            {this.state.error && <b>{this.state.error}</b>}
+            {this.state.error && (
+              <Typography variant="error">{this.state.error}</Typography>
+            )}
             {this.state.transaction && (
               <EthereumTransaction
                 context={this.props.context}
