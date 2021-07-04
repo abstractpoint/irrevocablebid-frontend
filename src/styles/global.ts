@@ -25,4 +25,7 @@ export default createGlobalStyle`
   .MuiListItem-secondaryAction {
     border-radius: 6px;
   }
+  .CheckCircleIcon__ActionOrange {
+    color: var(--action-orange)!important;
+  }
 `;

@@ -294,9 +294,7 @@ class SellerViewComponent extends React.Component<
                   this.state.sellerEscrowInfo.state === null ||
                   !this.state.sellerEscrowInfo.isOwner ||
                   !button.isVisible(this.state.sellerEscrowInfo.state);
-                if (isDisabled) {
-                  return null;
-                }
+
                 return (
                   <Grid
                     container
@@ -321,7 +319,12 @@ class SellerViewComponent extends React.Component<
                       {this.state.sellerEscrowInfo.state !== null &&
                         button.isComplete(
                           this.state.sellerEscrowInfo.state
-                        ) && <CheckCircleIcon color="primary" />}
+                        ) && (
+                          <CheckCircleIcon
+                            color="primary"
+                            className="CheckCircleIcon__ActionOrange"
+                          />
+                        )}
                     </Grid>
                   </Grid>
                 );

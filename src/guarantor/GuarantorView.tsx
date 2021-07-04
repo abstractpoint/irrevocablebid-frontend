@@ -276,10 +276,6 @@ export class GuarantorViewComponent extends React.Component<
                   this.state.guarantorEscrowInfo.state === null ||
                   !this.state.guarantorEscrowInfo.isOwner ||
                   !button.isVisible(this.state.guarantorEscrowInfo.state);
-
-                if (isDisabled) {
-                  return null;
-                }
                 return (
                   <Grid
                     container
@@ -305,7 +301,12 @@ export class GuarantorViewComponent extends React.Component<
                       {this.state.guarantorEscrowInfo.state !== null &&
                         button.isComplete(
                           this.state.guarantorEscrowInfo.state
-                        ) && <CheckCircleIcon color="primary" />}
+                        ) && (
+                          <CheckCircleIcon
+                            color="primary"
+                            className="CheckCircleIcon__ActionOrange"
+                          />
+                        )}
                     </Grid>
                   </Grid>
                 );
@@ -337,7 +338,10 @@ export class GuarantorViewComponent extends React.Component<
                   <Grid item xs={2}>
                     {this.state.guarantorEscrowInfo.state !== null &&
                       !this.state.guarantorEscrowInfo.hasAsset && (
-                        <CheckCircleIcon color="primary" />
+                        <CheckCircleIcon
+                          color="primary"
+                          className="CheckCircleIcon__ActionOrange"
+                        />
                       )}
                   </Grid>
                 </Grid>
