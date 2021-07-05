@@ -269,14 +269,19 @@ class SellerViewComponent extends React.Component<
     return (
       <Layout>
         {this.state.sellerEscrowInfo.state &&
-          this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed && (
+          this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
+          this.state.sellerEscrow !== null &&
+          this.state.sellerEscrowInfo.offerInfo !== null &&
+          this.state.sellerEscrowInfo.contractInfo !== null &&
+          this.state.sellerEscrowInfo.bidInfo !== null && (
             <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
               <PanelWrapper>
                 <VisualizerPanel
-                  pollOffers={
-                    this.state.sellerEscrow &&
-                    this.state.sellerEscrow.pollOffers
-                  }
+                  context={this.props.context}
+                  sellerEscrow={this.state.sellerEscrow}
+                  offerInfo={this.state.sellerEscrowInfo.offerInfo}
+                  contractInfo={this.state.sellerEscrowInfo.contractInfo}
+                  bidInfo={this.state.sellerEscrowInfo.bidInfo}
                 />
               </PanelWrapper>
             </Panel>
@@ -329,7 +334,7 @@ class SellerViewComponent extends React.Component<
                         {button.name}
                       </Button>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                       {this.state.sellerEscrowInfo.state !== null &&
                         button.isComplete(
                           this.state.sellerEscrowInfo.state

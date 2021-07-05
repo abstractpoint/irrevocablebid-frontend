@@ -5,9 +5,11 @@ const LayoutDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 60px 160px;
   height: 100%;
+  align-items: flex-start;
+  align-content: flex-start;
 `;
 
 export const Layout = (props: { children: React.ReactNode }) => {

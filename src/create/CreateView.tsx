@@ -16,7 +16,7 @@ import * as ethers from 'ethers';
 import { BigNumber } from '@ethersproject/bignumber';
 
 import { AssetKind, ERC721Asset, ERC1155Asset } from '../../lib';
-import { SellOrder, BuyOrder, serializeSellOrder } from '../../lib';
+import { serializeSellOrder } from '../../lib';
 import { SellerEscrow, createAuctionSellOrder } from '../../lib';
 
 import {

@@ -297,7 +297,7 @@ export class GuarantorViewComponent extends React.Component<
                         {button.name}
                       </Button>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                       {this.state.guarantorEscrowInfo.state !== null &&
                         button.isComplete(
                           this.state.guarantorEscrowInfo.state
@@ -335,7 +335,7 @@ export class GuarantorViewComponent extends React.Component<
                       Withdraw NFT
                     </Button>
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={1}>
                     {this.state.guarantorEscrowInfo.state !== null &&
                       !this.state.guarantorEscrowInfo.hasAsset && (
                         <CheckCircleIcon
