@@ -268,9 +268,9 @@ class SellerViewComponent extends React.Component<
   render() {
     return (
       <Layout>
-        {this.state.sellerEscrowInfo.state &&
+        {this.state.sellerEscrow !== null &&
+          this.state.sellerEscrowInfo.state &&
           this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
-          this.state.sellerEscrow !== null &&
           this.state.sellerEscrowInfo.offerInfo !== null &&
           this.state.sellerEscrowInfo.contractInfo !== null &&
           this.state.sellerEscrowInfo.bidInfo !== null && (
@@ -282,6 +282,10 @@ class SellerViewComponent extends React.Component<
                   offerInfo={this.state.sellerEscrowInfo.offerInfo}
                   contractInfo={this.state.sellerEscrowInfo.contractInfo}
                   bidInfo={this.state.sellerEscrowInfo.bidInfo}
+                  executed={
+                    this.state.sellerEscrowInfo.state >=
+                    SellerEscrowState.Executed
+                  }
                 />
               </PanelWrapper>
             </Panel>
