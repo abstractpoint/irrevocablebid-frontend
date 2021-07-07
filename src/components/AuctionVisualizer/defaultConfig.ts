@@ -6,7 +6,7 @@ const defaultConfig: AuctionVisualizerConfig = {
   size: [560, 460],
   margin: { top: 65, right: 250, bottom: 65, left: 0 },
   curveType: d3.curveBumpX,
-  currencyFormat: '$.1d',
+  currencyFormat: '.3f',
   endingDuration: 1500,
   endingEase: d3.easeCubic,
   lineExtend: 40,
@@ -22,7 +22,7 @@ const defaultConfig: AuctionVisualizerConfig = {
     generator: (d, i) => [
       [`Bid #${i}`, ''],
       ['Time:', d3.timeFormat('%c')(d.time)],
-      ['Bid amount:', d3.format('$.1d')(d.price)],
+      ['Bid amount:', d3.format('.3f')(d.price)],
       ['Submitted by:', d.by.replace(/(^.{6}).*(.{4}$)/, '$1...$2')],
     ],
     offset: [15, 0],
