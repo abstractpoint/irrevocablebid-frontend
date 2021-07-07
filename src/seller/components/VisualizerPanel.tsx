@@ -162,7 +162,7 @@ export const VisualizerPanel = (props: VisualizerPanelProps) => {
       const price =
         (await getCryptoAmount(buyOrder.basePrice, buyOrder.paymentToken)) ||
         '';
-      newLoadPrices.push(buyOrder.basePrice.toNumber());
+      newLoadPrices.push(parseFloat(price));
       return {
         price: parseFloat(price),
         by: buyOrder.maker,
