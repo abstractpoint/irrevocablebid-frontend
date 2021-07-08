@@ -110,6 +110,9 @@ export class FulfillAuctionModal extends React.Component<
     return (
       <Dialog
         open={this.props.open}
+        onEntered={() => {
+          this.refreshBuyOrders();
+        }}
         onClose={this.props.onClose}
         aria-labelledby="simple-modal-title"
         fullWidth={true}
@@ -162,17 +165,6 @@ export class FulfillAuctionModal extends React.Component<
             )}
           </DialogContent>
           <DialogActions>
-            <Button
-              color="primary"
-              variant="text"
-              size="small"
-              onClick={() => {
-                this.refreshBuyOrders();
-              }}
-            >
-              Refresh
-            </Button>
-            <div style={{ flex: '1 0 0' }} />
             <Button
               color="primary"
               variant="text"
