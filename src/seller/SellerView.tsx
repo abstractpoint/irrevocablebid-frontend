@@ -26,6 +26,8 @@ import {
   decodeBuyOrder,
 } from '../helpers';
 
+import { Asset } from '../components/Asset';
+
 import { ContractInfo } from './components/ContractInfo';
 import { OfferInfo } from './components/OfferInfo';
 import { BidInfo } from './components/BidInfo';
@@ -268,28 +270,44 @@ class SellerViewComponent extends React.Component<
   render() {
     return (
       <Layout>
-        {this.state.sellerEscrow !== null &&
-          this.state.sellerEscrowInfo.state &&
-          this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
-          this.state.sellerEscrowInfo.offerInfo !== null &&
-          this.state.sellerEscrowInfo.contractInfo !== null &&
-          this.state.sellerEscrowInfo.bidInfo !== null && (
-            <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
-              <PanelWrapper>
-                <VisualizerPanel
-                  context={this.props.context}
-                  sellerEscrow={this.state.sellerEscrow}
-                  offerInfo={this.state.sellerEscrowInfo.offerInfo}
-                  contractInfo={this.state.sellerEscrowInfo.contractInfo}
-                  bidInfo={this.state.sellerEscrowInfo.bidInfo}
-                  executed={
-                    this.state.sellerEscrowInfo.state >=
-                    SellerEscrowState.Executed
-                  }
-                />
-              </PanelWrapper>
-            </Panel>
-          )}
+        <div>
+          <div style={{ paddingBottom: '20px', marginRight: '40px' }}>
+            {this.state.sellerEscrowInfo.offerInfo && (
+              <Panel>
+                <PanelWrapper>
+                  <Asset
+                    context={this.props.context}
+                    asset={this.state.sellerEscrowInfo.offerInfo.asset}
+                  />
+                </PanelWrapper>
+              </Panel>
+            )}
+          </div>
+          <div>
+            {this.state.sellerEscrow !== null &&
+              this.state.sellerEscrowInfo.state !== null &&
+              this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
+              this.state.sellerEscrowInfo.offerInfo !== null &&
+              this.state.sellerEscrowInfo.contractInfo !== null &&
+              this.state.sellerEscrowInfo.bidInfo !== null && (
+                <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
+                  <PanelWrapper>
+                    <VisualizerPanel
+                      context={this.props.context}
+                      sellerEscrow={this.state.sellerEscrow}
+                      offerInfo={this.state.sellerEscrowInfo.offerInfo}
+                      contractInfo={this.state.sellerEscrowInfo.contractInfo}
+                      bidInfo={this.state.sellerEscrowInfo.bidInfo}
+                      executed={
+                        this.state.sellerEscrowInfo.state >=
+                        SellerEscrowState.Executed
+                      }
+                    />
+                  </PanelWrapper>
+                </Panel>
+              )}
+          </div>
+        </div>
         <Panel>
           <PanelWrapper>
             <Typography variant="h1" style={{ marginBottom: '20px' }}>
