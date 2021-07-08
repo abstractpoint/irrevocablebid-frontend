@@ -20,6 +20,12 @@ export type EthereumContext = {
   deployment?: Deployment;
 };
 
+export type AssetInfo = {
+  name: string;
+  description: string;
+  imageURL: string;
+};
+
 /******************************************************************************/
 /* Helper Functions */
 /******************************************************************************/
@@ -113,4 +119,17 @@ export async function lookupAssetURI(
   }
 
   return null;
+}
+
+export async function lookupAssetInfo(
+  provider: ethers.providers.JsonRpcProvider,
+  deployment: Deployment,
+  asset: ERC721Asset | ERC1155Asset
+): Promise<AssetInfo | null> {
+  return {
+    name: 'Yellow Perch',
+    description: 'Photograph of a Yellow Perch.',
+    imageURL:
+      'https://ipfs.io/ipfs/QmeL37Yk4xkVPsA87pSGDVVGSziU9M4sCKvDFVcsccgK3c/image.jpeg',
+  };
 }
