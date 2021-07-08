@@ -23,7 +23,10 @@ import {
   EthereumContext,
   isWalletConnected,
   lookupTokenInfo,
+  lookupAssetURI,
 } from '../helpers';
+
+import { Asset } from '../components/Asset';
 
 import {
   EthereumTransaction,
@@ -57,6 +60,7 @@ type CreateViewState = {
     guarantorSellerSplitPercentage: number;
     expirationDays: string | null;
   };
+  asset: ERC721Asset | ERC1155Asset | null;
   sellOrderParameters: SellOrderParameters | null;
 
   error?: string;
@@ -79,6 +83,7 @@ export class CreateViewComponent extends React.Component<
       guarantorSellerSplitPercentage: 25,
       expirationDays: '3',
     },
+    asset: null,
     sellOrderParameters: null,
 
     transactionStatus: EthereumTransactionStatus.None,
@@ -104,6 +109,53 @@ export class CreateViewComponent extends React.Component<
       this.props.context.provider
     );
     this.setState({ ...this.state, walletConnected });
+  }
+
+  async checkValidAsset() {
+    if (
+      !this.state.rawInputs.tokenAddress ||
+      !this.state.rawInputs.tokenId ||
+      !this.props.context.provider
+    ) {
+      this.setState({ asset: null });
+      return;
+    }
+
+    let tokenAddress: string;
+    try {
+      tokenAddress = ethers.utils.getAddress(this.state.rawInputs.tokenAddress);
+    } catch (err) {
+      this.setState({ asset: null });
+      return;
+    }
+
+    let tokenId: BigNumber;
+    try {
+      tokenId = ethers.BigNumber.from(this.state.rawInputs.tokenId);
+    } catch (err) {
+      this.setState({ asset: null });
+      return;
+    }
+
+    let asset: ERC721Asset | ERC1155Asset;
+    if (this.state.rawInputs.tokenType == AssetKind.ERC1155) {
+      asset = {
+        kind: AssetKind.ERC1155,
+        tokenAddress,
+        tokenId,
+        tokenQuantity: ethers.BigNumber.from(1),
+      };
+    } else {
+      asset = { kind: AssetKind.ERC721, tokenAddress, tokenId };
+    }
+
+    const tokenURI = await lookupAssetURI(this.props.context.provider, asset);
+    if (!tokenURI) {
+      this.setState({ asset: null });
+      return;
+    }
+
+    this.setState({ asset });
   }
 
   async parseParameters(): Promise<SellOrderParameters> {
@@ -293,27 +345,42 @@ export class CreateViewComponent extends React.Component<
   }
 
   handleTokenAddressChange(value: string) {
-    this.setState({
-      ...this.state,
-      rawInputs: { ...this.state.rawInputs, tokenAddress: value },
-    });
+    this.setState(
+      {
+        ...this.state,
+        rawInputs: { ...this.state.rawInputs, tokenAddress: value },
+      },
+      () => {
+        this.checkValidAsset();
+      }
+    );
   }
 
   handleTokenIdChange(value: string) {
-    this.setState({
-      ...this.state,
-      rawInputs: { ...this.state.rawInputs, tokenId: value },
-    });
+    this.setState(
+      {
+        ...this.state,
+        rawInputs: { ...this.state.rawInputs, tokenId: value },
+      },
+      () => {
+        this.checkValidAsset();
+      }
+    );
   }
 
   handleTokenTypeChange(value: string) {
-    this.setState({
-      ...this.state,
-      rawInputs: {
-        ...this.state.rawInputs,
-        tokenType: value == 'erc721' ? AssetKind.ERC721 : AssetKind.ERC1155,
+    this.setState(
+      {
+        ...this.state,
+        rawInputs: {
+          ...this.state.rawInputs,
+          tokenType: value == 'erc721' ? AssetKind.ERC721 : AssetKind.ERC1155,
+        },
       },
-    });
+      () => {
+        this.checkValidAsset();
+      }
+    );
   }
 
   handleInitialPriceChange(value: string) {
@@ -351,6 +418,20 @@ export class CreateViewComponent extends React.Component<
   render() {
     return (
       <Layout>
+        <div>
+          <div style={{ paddingBottom: '20px', marginRight: '40px' }}>
+            {this.state.asset && (
+              <Panel>
+                <PanelWrapper>
+                  <Asset
+                    context={this.props.context}
+                    asset={this.state.asset}
+                  />
+                </PanelWrapper>
+              </Panel>
+            )}
+          </div>
+        </div>
         <Panel>
           <PanelWrapper>
             <Typography variant="h1" align="left">
