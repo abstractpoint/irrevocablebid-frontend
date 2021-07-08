@@ -1,7 +1,13 @@
 import * as ethers from 'ethers';
 
 import { Deployment } from '../lib';
-import { SellOrder, BuyOrder } from '../lib';
+import {
+  ERC721Asset,
+  ERC1155Asset,
+  AssetKind,
+  SellOrder,
+  BuyOrder,
+} from '../lib';
 import { deserializeSellOrder, deserializeBuyOrder } from '../lib';
 import { validateBuyOrder, validateSellOrder, validateMatch } from '../lib';
 
@@ -80,4 +86,31 @@ export async function lookupTokenInfo(
   const decimals = await erc20.decimals();
 
   return { symbol, decimals };
+}
+
+export async function lookupAssetURI(
+  provider: ethers.providers.JsonRpcProvider,
+  asset: ERC721Asset | ERC1155Asset
+): Promise<string | null> {
+  if (asset.kind == AssetKind.ERC721) {
+    const abi = ['function tokenURI(uint256 _tokenId) view returns (string)'];
+    const erc721 = new ethers.Contract(asset.tokenAddress, abi, provider);
+
+    try {
+      return await erc721.tokenURI(asset.tokenId);
+    } catch (err) {
+      return null;
+    }
+  } else if (asset.kind == AssetKind.ERC1155) {
+    const abi = ['function uri(uint256 _id) view returns (string)'];
+    const erc1155 = new ethers.Contract(asset.tokenAddress, abi, provider);
+
+    try {
+      return await erc1155.uri(asset.tokenId);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  return null;
 }
