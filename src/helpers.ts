@@ -126,10 +126,40 @@ export async function lookupAssetInfo(
   deployment: Deployment,
   asset: ERC721Asset | ERC1155Asset
 ): Promise<AssetInfo | null> {
+  const assetURI = await lookupAssetURI(provider, asset);
+  if (!assetURI) return null;
+
+  const metadataURL = assetURI.replace(
+    'ipfs://',
+    deployment.ipfsGatewayURL + '/'
+  );
+
+  let response: Response;
+  try {
+    response = await fetch(metadataURL, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+  } catch (err) {
+    console.error('Error fetching asset metadata:', err);
+    return null;
+  }
+
+  if (response.status != 200) {
+    console.error('Error fetching asset metadata:', response);
+    return null;
+  }
+
+  const responseObject: any = await response.json();
+
   return {
-    name: 'Yellow Perch',
-    description: 'Photograph of a Yellow Perch.',
-    imageURL:
-      'https://ipfs.io/ipfs/QmeL37Yk4xkVPsA87pSGDVVGSziU9M4sCKvDFVcsccgK3c/image.jpeg',
+    name: responseObject.name,
+    description: responseObject.description,
+    imageURL: responseObject.image.replace(
+      'ipfs://',
+      deployment.ipfsGatewayURL + '/'
+    ),
   };
 }
