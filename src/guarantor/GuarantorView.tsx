@@ -26,6 +26,8 @@ import {
   decodeBuyOrder,
 } from '../helpers';
 
+import { Asset } from '../components/Asset';
+
 import { ContractInfo } from './components/ContractInfo';
 import { OfferInfo } from './components/OfferInfo';
 import { BidInfo } from './components/BidInfo';
@@ -249,6 +251,20 @@ export class GuarantorViewComponent extends React.Component<
   render() {
     return (
       <Layout>
+        <div>
+          <div style={{ paddingBottom: '20px', marginRight: '40px' }}>
+            {this.state.guarantorEscrowInfo.offerInfo && (
+              <Panel>
+                <PanelWrapper>
+                  <Asset
+                    context={this.props.context}
+                    asset={this.state.guarantorEscrowInfo.offerInfo.asset}
+                  />
+                </PanelWrapper>
+              </Panel>
+            )}
+          </div>
+        </div>
         <Panel>
           <PanelWrapper>
             <Typography variant="h1" style={{ marginBottom: '20px' }}>
