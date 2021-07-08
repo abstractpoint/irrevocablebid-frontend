@@ -33,6 +33,8 @@ import {
   EthereumTransactionStatus,
 } from '../components/EthereumTransaction';
 
+import { SelectAssetModal } from './modals/SelectAssetModal';
+
 /******************************************************************************/
 /* Top-level Create View Component */
 /******************************************************************************/
@@ -60,6 +62,7 @@ type CreateViewState = {
     guarantorSellerSplitPercentage: number;
     expirationDays: string | null;
   };
+  selectModalOpen: boolean;
   asset: ERC721Asset | ERC1155Asset | null;
   sellOrderParameters: SellOrderParameters | null;
 
@@ -83,6 +86,7 @@ export class CreateViewComponent extends React.Component<
       guarantorSellerSplitPercentage: 25,
       expirationDays: '3',
     },
+    selectModalOpen: false,
     asset: null,
     sellOrderParameters: null,
 
@@ -344,6 +348,20 @@ export class CreateViewComponent extends React.Component<
     window.location.replace(sellerURL);
   }
 
+  handleSelectAsset(asset: ERC721Asset | ERC1155Asset | null) {
+    if (!asset) return;
+
+    this.setState({
+      asset: asset,
+      rawInputs: {
+        ...this.state.rawInputs,
+        tokenAddress: asset.tokenAddress,
+        tokenId: asset.tokenId.toString(),
+        tokenType: asset.kind,
+      },
+    });
+  }
+
   handleTokenAddressChange(value: string) {
     this.setState(
       {
@@ -442,6 +460,7 @@ export class CreateViewComponent extends React.Component<
                 <FieldLabel for="tokenAddress" label="Token Address">
                   <TextField
                     name="tokenAddress"
+                    value={this.state.rawInputs.tokenAddress || ''}
                     onChange={(event: any) => {
                       this.handleTokenAddressChange(event.target.value);
                     }}
@@ -452,30 +471,43 @@ export class CreateViewComponent extends React.Component<
                 <FieldLabel for="tokenId" label="Token Id">
                   <TextField
                     name="tokenId"
+                    value={this.state.rawInputs.tokenId || ''}
                     onChange={(event: any) => {
                       this.handleTokenIdChange(event.target.value);
                     }}
                   />
                 </FieldLabel>
               </Grid>
-              <Grid item xs={12}>
-                <FieldLabel for="tokenType" label="Token Type">
-                  <RadioGroup
-                    name="tokenType"
-                    value={
-                      this.state.rawInputs.tokenType == AssetKind.ERC721
-                        ? 'erc721'
-                        : 'erc1155'
-                    }
-                    onChange={(event: any) => {
-                      this.handleTokenTypeChange(event.target.value);
+              <Grid container item xs={12} alignItems="center">
+                <Grid item xs={6}>
+                  <FieldLabel for="tokenType" label="Token Type">
+                    <RadioGroup
+                      name="tokenType"
+                      value={
+                        this.state.rawInputs.tokenType == AssetKind.ERC721
+                          ? 'erc721'
+                          : 'erc1155'
+                      }
+                      onChange={(event: any) => {
+                        this.handleTokenTypeChange(event.target.value);
+                      }}
+                      values={[
+                        { value: 'erc721', label: 'ERC721' },
+                        { value: 'erc1155', label: 'ERC1155' },
+                      ]}
+                    ></RadioGroup>
+                  </FieldLabel>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    disabled={!this.state.walletConnected}
+                    onClick={() => {
+                      this.setState({ selectModalOpen: true });
                     }}
-                    values={[
-                      { value: 'erc721', label: 'ERC721' },
-                      { value: 'erc1155', label: 'ERC1155' },
-                    ]}
-                  ></RadioGroup>
-                </FieldLabel>
+                  >
+                    Choose NFT
+                  </Button>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
                 <FieldLabel for="initialPrice" label="Initial Price">
@@ -573,6 +605,16 @@ export class CreateViewComponent extends React.Component<
             </Grid>
           </PanelWrapper>
         </Panel>
+        <SelectAssetModal
+          open={this.state.selectModalOpen}
+          onClose={() => {
+            this.setState({ selectModalOpen: false });
+          }}
+          onSelect={(asset: ERC721Asset | ERC1155Asset | null) => {
+            this.handleSelectAsset(asset);
+          }}
+          context={this.props.context}
+        />
       </Layout>
     );
   }
