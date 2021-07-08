@@ -9,6 +9,7 @@ type TextFieldProps = {
   name: string;
   onChange: (event: any) => void;
   type?: string;
+  value?: string;
   defaultValue?: string;
   min?: string;
   styles?: any;
@@ -34,6 +35,7 @@ export const TextField = (props: TextFieldProps) => {
     <div>
       <TextFieldStyled
         type={props.type}
+        value={props.value}
         defaultValue={props.defaultValue}
         name={props.name}
         onChange={props.onChange}
