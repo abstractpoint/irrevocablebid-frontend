@@ -188,8 +188,14 @@ export class SelectAssetModal extends React.Component<
                         <Avatar src={candidate.imageURL} variant="square" />
                       </ListItemAvatar>
                       <ListItemText
-                        primary={candidate.name}
-                        secondary={candidate.description}
+                        primary={
+                          <Typography variant="h4">{candidate.name}</Typography>
+                        }
+                        secondary={
+                          <Typography variant="p">
+                            {candidate.description}
+                          </Typography>
+                        }
                       />
                     </ListItem>
                   );
