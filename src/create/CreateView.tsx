@@ -326,6 +326,19 @@ export class CreateViewComponent extends React.Component<
       return;
     }
 
+    /* Wait until contract is ready */
+    while (true) {
+      if (
+        await SellerEscrow.ready(
+          this.props.context.provider,
+          this.props.context.deployment,
+          sellerEscrowAddress
+        )
+      )
+        break;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
     /* Create sell order */
     const sellOrder = createAuctionSellOrder(
       this.props.context.deployment,
