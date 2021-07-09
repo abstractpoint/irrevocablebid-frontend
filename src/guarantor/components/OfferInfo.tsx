@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { AssetKind } from '../../../lib';
 import { GuarantorEscrowOfferInfo } from '../../../lib';
 
-import { EthereumContext } from '../../helpers';
+import { EthereumContext, formatPercent } from '../../helpers';
 import { TokenAmount } from '../../components/TokenAmount';
 import { EthereumAddress } from '../../components/EthereumAddress';
 
@@ -61,6 +61,22 @@ export function OfferInfo(props: OfferInfoProps) {
             address={props.offerInfo.escrowAddress}
             variant={'view'}
           />
+        </ListItem>
+        <ListItem>
+          <Typography variant="h4" subVariant="listItemHeading">
+            Split:{' '}
+          </Typography>
+          <Typography variant="p">
+            {formatPercent(props.offerInfo.guarantorSellerSplitBasisPoints)}
+          </Typography>
+        </ListItem>
+        <ListItem>
+          <Typography variant="h4" subVariant="listItemHeading">
+            Service Fee:{' '}
+          </Typography>
+          <Typography variant="p">
+            {formatPercent(props.offerInfo.serviceFeeBasisPoints)}
+          </Typography>
         </ListItem>
         <ListItem>
           <Typography variant="h4" subVariant="listItemHeading">
