@@ -251,6 +251,19 @@ export class GuaranteeViewComponent extends React.Component<
       return;
     }
 
+    /* Wait until contract is ready */
+    while (true) {
+      if (
+        await GuarantorEscrow.ready(
+          this.props.context.provider,
+          this.props.context.deployment,
+          guarantorEscrowAddress
+        )
+      )
+        break;
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
     /* Create matching buy order */
     const buyOrder = createMatchingBuyOrder(
       this.props.context.deployment,
