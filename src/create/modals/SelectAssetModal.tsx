@@ -171,7 +171,7 @@ export class SelectAssetModal extends React.Component<
             {this.state.loading ? (
               <ProgressIndicator />
             ) : (
-              <List>
+              <List style={{ overflow: 'auto', maxHeight: 300 }}>
                 {this.state.candidates.map((candidate, index) => {
                   return (
                     <ListItem
