@@ -138,7 +138,7 @@ export class FulfillAuctionModal extends React.Component<
             {this.state.loading ? (
               <ProgressIndicator />
             ) : (
-              <List>
+              <List style={{ overflow: 'auto', maxHeight: 300 }}>
                 {this.state.buyOrders.map((buyOrder, index) => {
                   const isGuarantor =
                     this.props.sellerEscrow &&
