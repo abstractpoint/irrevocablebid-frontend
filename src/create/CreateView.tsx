@@ -452,7 +452,7 @@ export class CreateViewComponent extends React.Component<
         </div>
         <Panel>
           <PanelWrapper>
-            <Typography variant="h1" align="left">
+            <Typography variant="h1" style={{ marginBottom: '20px' }}>
               Consign
             </Typography>
             <Grid container spacing={2} alignItems="center" justify="center">
