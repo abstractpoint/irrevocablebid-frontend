@@ -286,7 +286,7 @@ export class GuarantorViewComponent extends React.Component<
               context={this.props.context}
               settlementInfo={this.state.guarantorEscrowInfo.settlementInfo}
             />
-            <Grid container spacing={1}>
+            <Grid container spacing={1} style={{ marginTop: '10px' }}>
               {GuarantorViewButtons.map((button) => {
                 const isDisabled =
                   this.state.guarantorEscrowInfo.state === null ||
