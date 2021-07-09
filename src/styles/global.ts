@@ -18,11 +18,11 @@ export default createGlobalStyle`
     --cancel-gray: #6a6969;
     --error-red: #ff6166;
   }
-  .MuiListItem-secondaryAction.Mui-selected {
+  .MuiListItem-root.Mui-selected {
     background-color: var(--action-orange)!important;
     border-radius: 6px;
   }
-  .MuiListItem-secondaryAction {
+  .MuiListItem-root {
     border-radius: 6px;
   }
   .CheckCircleIcon__ActionOrange {
