@@ -37,6 +37,8 @@ import {
   EthereumTransactionStatus,
 } from '../components/EthereumTransaction';
 
+import { Asset } from '../components/Asset';
+
 import { OfferInfo } from './components/OfferInfo';
 
 /******************************************************************************/
@@ -275,6 +277,20 @@ export class GuaranteeViewComponent extends React.Component<
   render() {
     return (
       <Layout>
+        <div>
+          <div style={{ paddingBottom: '20px', marginRight: '40px' }}>
+            {this.state.sellerEscrowInfo.offerInfo && (
+              <Panel>
+                <PanelWrapper>
+                  <Asset
+                    context={this.props.context}
+                    asset={this.state.sellerEscrowInfo.offerInfo.asset}
+                  />
+                </PanelWrapper>
+              </Panel>
+            )}
+          </div>
+        </div>
         <Panel>
           <PanelWrapper>
             <Typography variant="h1" style={{ marginBottom: '20px' }}>
