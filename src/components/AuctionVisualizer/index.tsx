@@ -232,7 +232,8 @@ const AuctionVisualizer = (props: AuctionVisualizerProps) => {
           .transition()
           .attr(
             'height',
-            curveArea.height + curveArea.y - yScale(props.initialPrice)
+            20
+            // curveArea.height + curveArea.y - yScale(props.initialPrice)
           );
 
         initialPrice

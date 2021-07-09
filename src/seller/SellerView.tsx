@@ -285,27 +285,27 @@ class SellerViewComponent extends React.Component<
           </div>
           <div>
             {this.state.sellerEscrow !== null &&
-              this.state.sellerEscrowInfo.state !== null &&
-              this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
-              this.state.sellerEscrowInfo.offerInfo !== null &&
-              this.state.sellerEscrowInfo.contractInfo !== null &&
-              this.state.sellerEscrowInfo.bidInfo !== null && (
-                <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
-                  <PanelWrapper>
-                    <VisualizerPanel
-                      context={this.props.context}
-                      sellerEscrow={this.state.sellerEscrow}
-                      offerInfo={this.state.sellerEscrowInfo.offerInfo}
-                      contractInfo={this.state.sellerEscrowInfo.contractInfo}
-                      bidInfo={this.state.sellerEscrowInfo.bidInfo}
-                      executed={
-                        this.state.sellerEscrowInfo.state >=
-                        SellerEscrowState.Executed
-                      }
-                    />
-                  </PanelWrapper>
-                </Panel>
-              )}
+            this.state.sellerEscrowInfo.state !== null &&
+            this.state.sellerEscrowInfo.state >= SellerEscrowState.Listed &&
+            this.state.sellerEscrowInfo.offerInfo !== null &&
+            this.state.sellerEscrowInfo.contractInfo !== null &&
+            this.state.sellerEscrowInfo.bidInfo !== null ? (
+              <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
+                <PanelWrapper>
+                  <VisualizerPanel
+                    context={this.props.context}
+                    sellerEscrow={this.state.sellerEscrow}
+                    offerInfo={this.state.sellerEscrowInfo.offerInfo}
+                    contractInfo={this.state.sellerEscrowInfo.contractInfo}
+                    bidInfo={this.state.sellerEscrowInfo.bidInfo}
+                    executed={
+                      this.state.sellerEscrowInfo.state >=
+                      SellerEscrowState.Executed
+                    }
+                  />
+                </PanelWrapper>
+              </Panel>
+            ) : null}
           </div>
         </div>
         <Panel>

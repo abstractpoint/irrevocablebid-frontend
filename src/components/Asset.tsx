@@ -106,7 +106,10 @@ export class Asset extends React.Component<AssetProps, AssetState> {
               marginTop: '20px',
             }}
           >
-            <img src={this.state.assetInfo.imageURL} style={{ width: '75%' }} />
+            <img
+              src={this.state.assetInfo.imageURL}
+              style={{ width: '75%', borderRadius: '10px' }}
+            />
           </div>
         )}
       </div>

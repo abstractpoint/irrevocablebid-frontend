@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 
 const defaultConfig: AuctionVisualizerConfig = {
   // size: [754, 460], // original
+  // [width, height]
   size: [560, 460],
   margin: { top: 65, right: 250, bottom: 65, left: 0 },
   curveType: d3.curveBumpX,
