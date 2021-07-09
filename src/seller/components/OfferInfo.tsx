@@ -42,35 +42,6 @@ export function OfferInfo(props: OfferInfoProps) {
       <List>
         <ListItem>
           <Typography variant="h4" subVariant="listItemHeading">
-            Token Address:{' '}
-          </Typography>
-
-          <EthereumAddress
-            context={props.context}
-            address={props.offerInfo.asset.tokenAddress}
-            variant={'view'}
-          />
-        </ListItem>
-        <ListItem>
-          <Typography variant="h4" subVariant="listItemHeading">
-            Token ID:
-          </Typography>
-          <Typography variant="p">
-            {props.offerInfo.asset.tokenId.toString()}
-          </Typography>
-        </ListItem>
-        {props.offerInfo.asset.kind == AssetKind.ERC1155 && (
-          <ListItem>
-            <Typography variant="h4" subVariant="listItemHeading">
-              Token Quantity:
-            </Typography>
-            <Typography variant="p">
-              {props.offerInfo.asset.tokenQuantity.toString()}
-            </Typography>
-          </ListItem>
-        )}
-        <ListItem>
-          <Typography variant="h4" subVariant="listItemHeading">
             Starting Price:{' '}
           </Typography>
           <Typography variant="p">
