@@ -24,6 +24,7 @@ import {
   EthereumTransaction,
   EthereumTransactionStatus,
 } from '../../components/EthereumTransaction';
+import { ProgressIndicator } from '../../components/ProgressIndicator';
 
 /******************************************************************************/
 /* Fulfill Auction Modal Component */
@@ -37,6 +38,7 @@ type FulfillAuctionModalProps = {
 };
 
 type FulfillAuctionModalState = {
+  loading: boolean;
   buyOrders: BuyOrderWithSignature[];
   index: number | null;
 
@@ -50,14 +52,11 @@ export class FulfillAuctionModal extends React.Component<
   FulfillAuctionModalState
 > {
   state: FulfillAuctionModalState = {
+    loading: true,
     buyOrders: [],
     index: null,
     transactionStatus: EthereumTransactionStatus.None,
   };
-
-  handleSelect(index: number) {
-    this.setState({ ...this.state, index });
-  }
 
   async refreshBuyOrders() {
     let buyOrders: BuyOrderWithSignature[] = [];
@@ -68,7 +67,23 @@ export class FulfillAuctionModal extends React.Component<
       return;
     }
 
-    this.setState({ ...this.state, buyOrders, error: undefined, index: null });
+    this.setState({
+      ...this.state,
+      buyOrders,
+      loading: false,
+      error: undefined,
+      index: null,
+    });
+  }
+
+  handleOnEnter() {
+    this.setState({ loading: true });
+
+    this.refreshBuyOrders();
+  }
+
+  handleSelect(index: number) {
+    this.setState({ ...this.state, index });
   }
 
   async handleClick() {
@@ -110,8 +125,8 @@ export class FulfillAuctionModal extends React.Component<
     return (
       <Dialog
         open={this.props.open}
-        onEntered={() => {
-          this.refreshBuyOrders();
+        onEnter={() => {
+          this.handleOnEnter();
         }}
         onClose={this.props.onClose}
         aria-labelledby="simple-modal-title"
@@ -120,37 +135,43 @@ export class FulfillAuctionModal extends React.Component<
         <DialogStyled>
           <DialogTitle id="simple-modal-title">Fulfill Auction</DialogTitle>
           <DialogContent>
-            <List>
-              {this.state.buyOrders.map((buyOrder, index) => {
-                const isGuarantor =
-                  this.props.sellerEscrow &&
-                  this.props.sellerEscrow.buyOrder !== null &&
-                  buyOrder.maker == this.props.sellerEscrow.buyOrder.maker;
-                return (
-                  <ListItem
-                    key={index}
-                    role={undefined}
-                    dense
-                    button
-                    selected={this.state.index == index}
-                    onClick={() => {
-                      this.handleSelect(index);
-                    }}
-                  >
-                    <ListItemText
-                      primary={`${isGuarantor ? 'Guarantor' : buyOrder.maker}`}
-                    />
-                    <ListItemSecondaryAction>
-                      <TokenAmount
-                        context={this.props.context}
-                        address={buyOrder.paymentToken}
-                        amount={buyOrder.basePrice}
+            {this.state.loading ? (
+              <ProgressIndicator />
+            ) : (
+              <List>
+                {this.state.buyOrders.map((buyOrder, index) => {
+                  const isGuarantor =
+                    this.props.sellerEscrow &&
+                    this.props.sellerEscrow.buyOrder !== null &&
+                    buyOrder.maker == this.props.sellerEscrow.buyOrder.maker;
+                  return (
+                    <ListItem
+                      key={index}
+                      role={undefined}
+                      dense
+                      button
+                      selected={this.state.index == index}
+                      onClick={() => {
+                        this.handleSelect(index);
+                      }}
+                    >
+                      <ListItemText
+                        primary={`${
+                          isGuarantor ? 'Guarantor' : buyOrder.maker
+                        }`}
                       />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                );
-              })}
-            </List>
+                      <ListItemSecondaryAction>
+                        <TokenAmount
+                          context={this.props.context}
+                          address={buyOrder.paymentToken}
+                          amount={buyOrder.basePrice}
+                        />
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
             {this.state.error && (
               <Typography variant="error">{this.state.error}</Typography>
             )}
