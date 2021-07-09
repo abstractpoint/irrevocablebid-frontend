@@ -55,7 +55,8 @@ export const Typography = (props: TypographyProps) => {
   if (props.subVariant === 'listHeading') {
     style = {
       ...style,
-      marginBottom: '10px',
+      marginTop: '5px',
+      marginBottom: '5px',
     };
   } else if (props.subVariant === 'listItemHeading') {
     style = {
