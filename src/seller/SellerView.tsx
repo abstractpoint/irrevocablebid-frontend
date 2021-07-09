@@ -292,6 +292,9 @@ class SellerViewComponent extends React.Component<
             this.state.sellerEscrowInfo.bidInfo !== null ? (
               <Panel style={{ marginRight: '40px', paddingRight: '160px' }}>
                 <PanelWrapper>
+                  <Typography variant="h1" style={{ marginBottom: '20px' }}>
+                    Visualizer
+                  </Typography>
                   <VisualizerPanel
                     context={this.props.context}
                     sellerEscrow={this.state.sellerEscrow}
