@@ -39,7 +39,8 @@ import {
 
 import { Asset } from '../components/Asset';
 
-import { OfferInfo } from './components/OfferInfo';
+import { ContractInfo } from '../seller/components/ContractInfo';
+import { OfferInfo } from '../seller/components/OfferInfo';
 
 /******************************************************************************/
 /* Top-level Guarantee View Component */
@@ -296,9 +297,12 @@ export class GuaranteeViewComponent extends React.Component<
             <Typography variant="h1" style={{ marginBottom: '20px' }}>
               Guarantee
             </Typography>
-            <OfferInfo
+            <ContractInfo
               context={this.props.context}
               contractInfo={this.state.sellerEscrowInfo.contractInfo}
+            />
+            <OfferInfo
+              context={this.props.context}
               offerInfo={this.state.sellerEscrowInfo.offerInfo}
             />
             {this.state.error && (
@@ -315,6 +319,7 @@ export class GuaranteeViewComponent extends React.Component<
             )}
             <Grid
               container
+              item
               xs={12}
               spacing={1}
               alignItems="center"
