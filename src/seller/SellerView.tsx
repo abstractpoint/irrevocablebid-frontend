@@ -138,6 +138,7 @@ type SellerViewState = {
     settlementInfo: SellerEscrowSettlementInfo | null;
   };
   modalOpen: SellerViewModal | null;
+  refreshTimer: number | null;
 };
 
 class SellerViewComponent extends React.Component<
@@ -156,6 +157,7 @@ class SellerViewComponent extends React.Component<
       settlementInfo: null,
     },
     modalOpen: null,
+    refreshTimer: null,
   };
 
   componentDidMount() {
@@ -228,6 +230,9 @@ class SellerViewComponent extends React.Component<
     this.setState({ ...this.state, sellerEscrow });
 
     await this.refreshState();
+
+    const refreshTimer = window.setInterval(() => { this.refreshState(); }, 3000);
+    this.setState({ refreshTimer });
   }
 
   async refreshState() {
