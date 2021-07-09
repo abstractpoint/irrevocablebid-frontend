@@ -52,15 +52,19 @@ export class EthereumTransaction extends React.Component<
   render() {
     if (this.state.receipt && this.state.receipt.status == 1) {
       return (
-        <Typography variant="h3">
-          Transaction succeeded! <CheckCircleOutlineOutlinedIcon />
-        </Typography>
+        <TransactionWrapper>
+          <Typography variant="h3">
+            Transaction succeeded!{' '}<CheckCircleOutlineOutlinedIcon />
+          </Typography>
+        </TransactionWrapper>
       );
     } else if (this.state.receipt && this.state.receipt.status == 0) {
       return (
-        <Typography variant="h3">
-          Transaction failed! <ErrorOutlineOutlinedIcon />
-        </Typography>
+        <TransactionWrapper>
+          <Typography variant="h3">
+            Transaction failed!{' '}<ErrorOutlineOutlinedIcon />
+          </Typography>
+        </TransactionWrapper>
       );
     } else {
       const txid = this.props.transaction.hash.toString();
