@@ -19,6 +19,8 @@ import { AssetKind, ERC721Asset, ERC1155Asset } from '../../../lib';
 
 import { EthereumContext } from '../../helpers';
 
+import { ProgressIndicator } from '../../components/ProgressIndicator';
+
 /******************************************************************************/
 /* Select Asset Modal Component */
 /******************************************************************************/
@@ -40,6 +42,7 @@ type SelectAssetModalProps = {
 };
 
 type SelectAssetModalState = {
+  loading: boolean;
   candidates: AssetCandidate[];
   index: number | null;
 };
@@ -49,6 +52,7 @@ export class SelectAssetModal extends React.Component<
   SelectAssetModalState
 > {
   state: SelectAssetModalState = {
+    loading: false,
     candidates: [],
     index: null,
   };
@@ -112,7 +116,13 @@ export class SelectAssetModal extends React.Component<
       candidates.push(candidate);
     }
 
-    this.setState({ candidates });
+    this.setState({ candidates, loading: false });
+  }
+
+  handleOnEnter() {
+    this.setState({ loading: true });
+
+    this.refreshAssets();
   }
 
   handleSelect(index: number) {
@@ -149,7 +159,7 @@ export class SelectAssetModal extends React.Component<
       <Dialog
         open={this.props.open}
         onEnter={() => {
-          this.refreshAssets();
+          this.handleOnEnter();
         }}
         onClose={this.props.onClose}
         aria-labelledby="simple-modal-title"
@@ -158,30 +168,34 @@ export class SelectAssetModal extends React.Component<
         <DialogStyled>
           <DialogTitle id="simple-modal-title">Select NFT</DialogTitle>
           <DialogContent>
-            <List>
-              {this.state.candidates.map((candidate, index) => {
-                return (
-                  <ListItem
-                    key={index}
-                    role={undefined}
-                    dense
-                    button
-                    selected={this.state.index == index}
-                    onClick={() => {
-                      this.handleSelect(index);
-                    }}
-                  >
-                    <ListItemAvatar>
-                      <Avatar src={candidate.imageURL} variant="square" />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={candidate.name}
-                      secondary={candidate.description}
-                    />
-                  </ListItem>
-                );
-              })}
-            </List>
+            {this.state.loading ? (
+              <ProgressIndicator />
+            ) : (
+              <List>
+                {this.state.candidates.map((candidate, index) => {
+                  return (
+                    <ListItem
+                      key={index}
+                      role={undefined}
+                      dense
+                      button
+                      selected={this.state.index == index}
+                      onClick={() => {
+                        this.handleSelect(index);
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar src={candidate.imageURL} variant="square" />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={candidate.name}
+                        secondary={candidate.description}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
           </DialogContent>
           <DialogActions>
             <Button
