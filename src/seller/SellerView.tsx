@@ -332,7 +332,7 @@ class SellerViewComponent extends React.Component<
               context={this.props.context}
               settlementInfo={this.state.sellerEscrowInfo.settlementInfo}
             />
-            <Grid container spacing={1}>
+            <Grid container spacing={1} style={{ marginTop: '10px' }}>
               {SellerViewButtons.map((button) => {
                 const isDisabled =
                   this.state.sellerEscrowInfo.state === null ||
