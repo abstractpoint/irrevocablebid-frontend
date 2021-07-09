@@ -156,16 +156,20 @@ export class FulfillAuctionModal extends React.Component<
                       }}
                     >
                       <ListItemText
-                        primary={`${
-                          isGuarantor ? 'Guarantor' : buyOrder.maker
-                        }`}
+                        primary={
+                          <Typography variant="h4">
+                            {isGuarantor ? 'Guarantor' : buyOrder.maker}
+                          </Typography>
+                        }
                       />
                       <ListItemSecondaryAction>
-                        <TokenAmount
-                          context={this.props.context}
-                          address={buyOrder.paymentToken}
-                          amount={buyOrder.basePrice}
-                        />
+                        <Typography variant="h4">
+                          <TokenAmount
+                            context={this.props.context}
+                            address={buyOrder.paymentToken}
+                            amount={buyOrder.basePrice}
+                          />
+                        </Typography>
                       </ListItemSecondaryAction>
                     </ListItem>
                   );
