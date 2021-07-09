@@ -116,6 +116,7 @@ type GuarantorViewState = {
     hasAsset: boolean;
   };
   modalOpen: GuarantorViewModal | null;
+  refreshTimer: number | null;
 };
 
 export class GuarantorViewComponent extends React.Component<
@@ -135,6 +136,7 @@ export class GuarantorViewComponent extends React.Component<
       hasAsset: false,
     },
     modalOpen: null,
+    refreshTimer: null,
   };
 
   componentDidMount() {
@@ -207,6 +209,9 @@ export class GuarantorViewComponent extends React.Component<
     this.setState({ ...this.state, guarantorEscrow });
 
     await this.refreshState();
+
+    const refreshTimer = window.setInterval(() => { this.refreshState(); }, 3000);
+    this.setState({ refreshTimer });
   }
 
   async refreshState() {
